@@ -3,7 +3,6 @@
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
-    int index = 0;
 
     void clear() {
         for (int i = 0; i < storage.length; i++) {
@@ -14,8 +13,7 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-        storage[index] = r;
-        index++;
+        storage[size()] = r;
     }
 
     Resume get(String uuid) {
