@@ -19,8 +19,12 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        storage[size] = r;
-        size++;
+        if (!Arrays.asList(storage).contains(r)) {
+            storage[size] = r;
+            size++;
+        } else {
+            System.out.println("error: " + r + " is already stored in storage");
+        }
     }
 
     public Resume get(String uuid) {
