@@ -8,7 +8,8 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private final Resume[] storage = new Resume[10000];
+    private static final int STORAGE_LIMIT = 10000;
+    private final Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
     private int index;
 
@@ -18,15 +19,14 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        if (!Arrays.asList(storage).contains(resume)) {
-            if (size < storage.length) {
-                storage[size] = resume;
-                size++;
-            } else {
-                System.out.println("Error: the storage is full and can't hold " + resume.getUuid());
-            }
-        } else {
+        index = findIndex(resume.getUuid());
+        if (size > storage.length) {
+            System.out.println("Error: the storage is full and can't hold " + resume.getUuid());
+        } else if (index >= 0) {
             System.out.println("Error: " + resume.getUuid() + " is already stored in storage");
+        } else {
+            storage[size] = resume;
+            size++;
         }
     }
 
@@ -35,7 +35,7 @@ public class ArrayStorage {
         if (index >= 0) {
             storage[index] = resume;
         } else {
-            throwNotFoundError(resume.getUuid());
+            printNotFoundMessage(resume.getUuid());
         }
     }
 
@@ -44,7 +44,7 @@ public class ArrayStorage {
         if (index >= 0) {
             return storage[index];
         } else {
-            throwNotFoundError(uuid);
+            printNotFoundMessage(uuid);
             return null;
         }
     }
@@ -56,7 +56,7 @@ public class ArrayStorage {
             storage[size - 1] = null;
             size--;
         } else {
-            throwNotFoundError(uuid);
+            printNotFoundMessage(uuid);
         }
     }
 
@@ -80,7 +80,7 @@ public class ArrayStorage {
         return -1;
     }
 
-    private void throwNotFoundError(String uuid) {
+    private void printNotFoundMessage(String uuid) {
         System.out.printf("\nError: %s is not found in storage\n", uuid);
     }
 }
