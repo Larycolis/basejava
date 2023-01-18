@@ -20,7 +20,7 @@ public class ArrayStorage {
     public void save(Resume resume) {
         if (findIndex(resume.getUuid()) != -1) {
             System.out.println("Error: " + resume.getUuid() + " is already stored in storage");
-        } else if (size >= storage.length) {
+        } else if (size >= STORAGE_LIMIT) {
             System.out.println("Error: storage overflow and can't hold " + resume.getUuid());
         } else {
             storage[size] = resume;
