@@ -11,7 +11,6 @@ public class ArrayStorage {
     private static final int STORAGE_LIMIT = 10000;
     private final Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
-    private int index;
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);
@@ -19,11 +18,10 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        index = findIndex(resume.getUuid());
-        if (size > storage.length) {
-            System.out.println("Error: the storage is full and can't hold " + resume.getUuid());
-        } else if (index >= 0) {
+        if (findIndex(resume.getUuid()) != -1) {
             System.out.println("Error: " + resume.getUuid() + " is already stored in storage");
+        } else if (size >= storage.length) {
+            System.out.println("Error: storage overflow and can't hold " + resume.getUuid());
         } else {
             storage[size] = resume;
             size++;
@@ -31,32 +29,32 @@ public class ArrayStorage {
     }
 
     public void update(Resume resume) {
-        index = findIndex(resume.getUuid());
-        if (index >= 0) {
-            storage[index] = resume;
-        } else {
+        int index = findIndex(resume.getUuid());
+        if (index == -1) {
             printNotFoundMessage(resume.getUuid());
+        } else {
+            storage[index] = resume;
         }
     }
 
     public Resume get(String uuid) {
-        index = findIndex(uuid);
-        if (index >= 0) {
-            return storage[index];
-        } else {
+        int index = findIndex(uuid);
+        if (index == -1) {
             printNotFoundMessage(uuid);
             return null;
+        } else {
+            return storage[index];
         }
     }
 
     public void delete(String uuid) {
-        index = findIndex(uuid);
-        if (index >= 0) {
+        int index = findIndex(uuid);
+        if (index == -1) {
+            printNotFoundMessage(uuid);
+        } else {
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
-        } else {
-            printNotFoundMessage(uuid);
         }
     }
 
