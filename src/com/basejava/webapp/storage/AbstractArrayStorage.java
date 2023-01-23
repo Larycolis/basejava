@@ -21,12 +21,10 @@ public abstract class AbstractArrayStorage implements Storage {
         } else if (size >= STORAGE_LIMIT) {
             System.out.println("Error: storage overflow and can't hold " + resume.getUuid());
         } else {
-            saveNewObject(resume);
+            saveNewObject(resume, index);
             size++;
         }
     }
-
-    protected abstract void saveNewObject(Resume resume);
 
     public void update(Resume resume) {
         int index = findIndex(resume.getUuid());
@@ -52,12 +50,11 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index == -1) {
             printNotFoundMessage(uuid);
         } else {
-            deleteObject(uuid, index);
+            deleteObject(index);
+            storage[size - 1] = null;
             size--;
         }
     }
-
-    protected abstract void deleteObject(String uuid, int index);
 
     /**
      * @return array, contains only Resumes in storage (without null)
@@ -70,6 +67,8 @@ public abstract class AbstractArrayStorage implements Storage {
         return size;
     }
 
+    protected abstract void saveNewObject(Resume resume, int index);
+    protected abstract void deleteObject(int index);
     protected abstract int findIndex(String uuid);
 
     protected void printNotFoundMessage(String uuid) {
