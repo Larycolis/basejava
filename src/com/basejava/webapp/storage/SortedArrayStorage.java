@@ -7,14 +7,13 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
     protected void saveNewObject(Resume resume, int index) {
-        System.out.println("Method not implemented yet");
-        // use method System.arraycopy();
+        System.arraycopy(storage, (-index - 1), storage, (-index - 1) + 1, size - (-index - 1));
+        storage[-index - 1] = resume;
     }
 
     @Override
     protected void deleteObject(int index) {
-        System.out.println("Method not implemented yet");
-        // use method System.arraycopy();
+        System.arraycopy(storage, index + 1, storage, index, size - index - 1);
     }
 
     @Override
