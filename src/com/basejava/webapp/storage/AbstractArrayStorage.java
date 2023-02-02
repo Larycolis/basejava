@@ -1,5 +1,8 @@
 package com.basejava.webapp.storage;
 
+import com.basejava.webapp.exeption.ExistStorageException;
+import com.basejava.webapp.exeption.NotExistStorageException;
+import com.basejava.webapp.exeption.StorageException;
 import com.basejava.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -17,9 +20,9 @@ public abstract class AbstractArrayStorage implements Storage {
     public void save(Resume resume) {
         int index = findIndex(resume.getUuid());
         if (index > 0) {
-            System.out.println("Error: " + resume.getUuid() + " is already stored in storage");
+            throw new ExistStorageException(resume.getUuid());
         } else if (size >= STORAGE_LIMIT) {
-            System.out.println("Error: storage overflow and can't hold " + resume.getUuid());
+            throw new StorageException("Error: storage overflow and can't hold ", resume.getUuid());
         } else {
             insertResume(resume, index);
             size++;
@@ -29,7 +32,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public void update(Resume resume) {
         int index = findIndex(resume.getUuid());
         if (index < 0) {
-            printNotFoundMessage(resume.getUuid());
+            throw new NotExistStorageException(resume.getUuid());
         } else {
             storage[index] = resume;
         }
@@ -38,8 +41,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public Resume get(String uuid) {
         int index = findIndex(uuid);
         if (index < 0) {
-            printNotFoundMessage(uuid);
-            return null;
+            throw new NotExistStorageException(uuid);
         } else {
             return storage[index];
         }
@@ -48,7 +50,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public void delete(String uuid) {
         int index = findIndex(uuid);
         if (index < 0) {
-            printNotFoundMessage(uuid);
+            throw new NotExistStorageException(uuid);
         } else {
             deleteResume(index);
             storage[size - 1] = null;
