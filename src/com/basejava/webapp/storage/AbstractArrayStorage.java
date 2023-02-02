@@ -74,8 +74,4 @@ public abstract class AbstractArrayStorage implements Storage {
     protected abstract void deleteResume(int index);
 
     protected abstract int findIndex(String uuid);
-
-    protected void printNotFoundMessage(String uuid) {
-        System.out.printf("\nError: %s is not found in storage\n", uuid);
-    }
 }
