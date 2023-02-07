@@ -85,7 +85,7 @@ public abstract class AbstractArrayStorageTest {
         storage.get(UUID_NOT_EXIST);
     }
 
-    @Test (expected = NotExistStorageException.class)
+    @Test(expected = NotExistStorageException.class)
     public void delete() {
         storage.delete(RESUME_1.getUuid());
         assertSize(2);
