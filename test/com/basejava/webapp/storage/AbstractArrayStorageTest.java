@@ -9,12 +9,26 @@ import org.junit.Before;
 import org.junit.Test;
 
 public abstract class AbstractArrayStorageTest {
+
     private final Storage storage;
     private static final String UUID_NOT_EXIST = "dummy";
-    private static final Resume RESUME_1 = new Resume("uuid1");
-    private static final Resume RESUME_2 = new Resume("uuid2");
-    private static final Resume RESUME_3 = new Resume("uuid3");
-    private static final Resume RESUME_4 = new Resume("uuid4");
+
+    private static final  String UUID_1 = "uuid1";
+    private static final  String UUID_2 = "uuid2";
+    private static final  String UUID_3 = "uuid3";
+    private static final  String UUID_4 = "uuid4";
+
+    private static final Resume RESUME_1;
+    private static final Resume RESUME_2;
+    private static final Resume RESUME_3;
+    private static final Resume RESUME_4;
+
+    static {
+        RESUME_1 = new Resume(UUID_1);
+        RESUME_2 = new Resume(UUID_2);
+        RESUME_3 = new Resume(UUID_3);
+        RESUME_4 = new Resume(UUID_4);
+    }
 
     protected AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
@@ -66,12 +80,12 @@ public abstract class AbstractArrayStorageTest {
     public void update() {
         Resume updatedResume = new Resume(RESUME_1.getUuid());
         storage.update(updatedResume);
-        Assert.assertSame(updatedResume, storage.get(RESUME_1.getUuid()));
+        Assert.assertSame(updatedResume, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
     public void updateNotExist() {
-        Resume resumeUpdate = new Resume(RESUME_4.getUuid());
+        Resume resumeUpdate = new Resume(UUID_4);
         storage.update(resumeUpdate);
     }
 
@@ -87,7 +101,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void delete() {
-        storage.delete(RESUME_1.getUuid());
+        storage.delete(UUID_1);
         assertSize(2);
         assertGet(RESUME_1);
     }
