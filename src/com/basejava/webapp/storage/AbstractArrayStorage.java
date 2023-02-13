@@ -1,7 +1,5 @@
 package com.basejava.webapp.storage;
 
-import com.basejava.webapp.exeption.ExistStorageException;
-import com.basejava.webapp.exeption.NotExistStorageException;
 import com.basejava.webapp.exeption.StorageException;
 import com.basejava.webapp.model.Resume;
 
@@ -17,11 +15,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    public void save(Resume resume) {
-        int index = findIndex(resume.getUuid());
-        if (index >= 0) {
-            throw new ExistStorageException(resume.getUuid());
-        } else if (size >= STORAGE_LIMIT) {
+    public void save(Resume resume, int index) {
+        if (size >= STORAGE_LIMIT) {
             throw new StorageException("Error: storage overflow and can't hold ", resume.getUuid());
         } else {
             insertResume(resume, index);
@@ -29,33 +24,18 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         }
     }
 
-    public void update(Resume resume) {
-        int index = findIndex(resume.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(resume.getUuid());
-        } else {
-            storage[index] = resume;
-        }
+    public void update(Resume resume, int index) {
+        storage[index] = resume;
     }
 
-    public Resume get(String uuid) {
-        int index = findIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        } else {
-            return storage[index];
-        }
+    public Resume get(int index) {
+        return storage[index];
     }
 
-    public void delete(String uuid) {
-        int index = findIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        } else {
-            deleteResume(index);
-            storage[size - 1] = null;
-            size--;
-        }
+    public void delete(int index) {
+        deleteResume(index);
+        storage[size - 1] = null;
+        size--;
     }
 
     /**
