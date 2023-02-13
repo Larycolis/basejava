@@ -5,11 +5,10 @@ import com.basejava.webapp.exeption.NotExistStorageException;
 import com.basejava.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
-    // done
+
     @Override
     public abstract void clear();
 
-    // done
     @Override
     public void save(Resume resume) {
         int index = findIndex(resume.getUuid());
@@ -20,7 +19,6 @@ public abstract class AbstractStorage implements Storage {
         }
     }
 
-    // done
     @Override
     public void update(Resume resume) {
         int index = findIndex(resume.getUuid());
@@ -31,7 +29,6 @@ public abstract class AbstractStorage implements Storage {
         }
     }
 
-    // done
     @Override
     public Resume get(String uuid) {
         int index = findIndex(uuid);
@@ -41,7 +38,6 @@ public abstract class AbstractStorage implements Storage {
         return get(index);
     }
 
-    // done
     @Override
     public void delete(String uuid) {
         int index = findIndex(uuid);
@@ -52,11 +48,9 @@ public abstract class AbstractStorage implements Storage {
         }
     }
 
-    // done
     @Override
     public abstract Resume[] getAll();
 
-    // done
     @Override
     public abstract int size();
 
