@@ -2,13 +2,12 @@ package com.basejava.webapp.storage;
 
 import com.basejava.webapp.exeption.ExistStorageException;
 import com.basejava.webapp.exeption.NotExistStorageException;
-import com.basejava.webapp.exeption.StorageException;
 import com.basejava.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public abstract class AbstractArrayStorageTest {
+public abstract class AbstractStorageTest {
 
     private final Storage storage;
     private static final String UUID_NOT_EXIST = "dummy";
@@ -30,7 +29,7 @@ public abstract class AbstractArrayStorageTest {
         RESUME_4 = new Resume(UUID_4);
     }
 
-    protected AbstractArrayStorageTest(Storage storage) {
+    protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
 
@@ -63,18 +62,19 @@ public abstract class AbstractArrayStorageTest {
         storage.save(RESUME_1);
     }
 
-    @Test(expected = StorageException.class)
-    public void saveOverflow() {
-        storage.clear();
-        try {
-            for (int i = 0; i <= AbstractArrayStorage.STORAGE_LIMIT - 1; i++) {
-                storage.save(new Resume());
-            }
-        } catch (StorageException e) {
-            Assert.fail();
-        }
-        storage.save(RESUME_3);
-    }
+    // тест только для классов с массивами
+//    @Test(expected = StorageException.class)
+//    public void saveOverflow() {
+//        storage.clear();
+//        try {
+//            for (int i = 0; i <= AbstractArrayStorage.STORAGE_LIMIT - 1; i++) {
+//                storage.save(new Resume());
+//            }
+//        } catch (StorageException e) {
+//            Assert.fail();
+//        }
+//        storage.save(RESUME_3);
+//    }
 
     @Test
     public void update() {
