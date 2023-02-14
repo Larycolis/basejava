@@ -15,7 +15,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    public void save(Resume resume, int index) {
+    protected void save(Resume resume, int index) {
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("Error: storage overflow and can't hold ", resume.getUuid());
         } else {
@@ -24,15 +24,15 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         }
     }
 
-    public void update(Resume resume, int index) {
+    protected void update(Resume resume, int index) {
         storage[index] = resume;
     }
 
-    public Resume get(int index) {
+    protected Resume get(int index) {
         return storage[index];
     }
 
-    public void delete(int index) {
+    protected void delete(int index) {
         deleteResume(index);
         storage[size - 1] = null;
         size--;
