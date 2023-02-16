@@ -2,6 +2,7 @@ package com.basejava.webapp.storage;
 
 import com.basejava.webapp.exeption.ExistStorageException;
 import com.basejava.webapp.exeption.NotExistStorageException;
+import com.basejava.webapp.exeption.StorageException;
 import com.basejava.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
@@ -62,19 +63,19 @@ public abstract class AbstractStorageTest {
         storage.save(RESUME_1);
     }
 
-    // тест только для классов с массивами
-//    @Test(expected = StorageException.class)
-//    public void saveOverflow() {
-//        storage.clear();
-//        try {
-//            for (int i = 0; i <= AbstractArrayStorage.STORAGE_LIMIT - 1; i++) {
-//                storage.save(new Resume());
-//            }
-//        } catch (StorageException e) {
-//            Assert.fail();
-//        }
-//        storage.save(RESUME_3);
-//    }
+    // тест saveOverflow только для классов с массивами
+    @Test(expected = StorageException.class)
+    public void saveOverflow() {
+        storage.clear();
+        try {
+            for (int i = 0; i <= AbstractArrayStorage.STORAGE_LIMIT - 1; i++) {
+                storage.save(new Resume());
+            }
+        } catch (StorageException e) {
+            Assert.fail();
+        }
+        storage.save(RESUME_3);
+    }
 
     @Test
     public void update() {
