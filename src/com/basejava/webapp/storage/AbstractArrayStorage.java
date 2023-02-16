@@ -15,25 +15,25 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    protected void save(Resume resume, int index) {
+    protected void doSave(Resume resume, Object searchKey) {
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("Error: storage overflow and can't hold ", resume.getUuid());
         } else {
-            insertResume(resume, index);
+            insertResume(resume, (Integer) searchKey);
             size++;
         }
     }
 
-    protected void update(Resume resume, int index) {
-        storage[index] = resume;
+    protected void doUpdate(Resume resume, Object searchKey) {
+        storage[(Integer) searchKey] = resume;
     }
 
-    protected Resume get(int index) {
-        return storage[index];
+    protected Resume doGet(Object searchKey) {
+        return storage[(Integer) searchKey];
     }
 
-    protected void delete(int index) {
-        deleteResume(index);
+    protected void doDelete(Object searchKey) {
+        deleteResume((Integer) searchKey);
         storage[size - 1] = null;
         size--;
     }
@@ -49,9 +49,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
-    protected abstract void insertResume(Resume resume, int index);
+    protected abstract void insertResume(Resume resume, Integer searchKey);
 
-    protected abstract void deleteResume(int index);
+    protected abstract void deleteResume(Integer searchKey);
 
-    protected abstract int findIndex(String uuid);
+//    protected abstract Integer getSearchKey(String uuid);
 }

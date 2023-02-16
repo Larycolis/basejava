@@ -8,7 +8,7 @@ import com.basejava.webapp.storage.Storage;
  * Test for your ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    private final static Storage ARRAY_STORAGE = new ListStorage(); //new ArrayStorage(); // new SortedArrayStorage();
+    private final static Storage ARRAY_STORAGE = new ListStorage(); // new ArrayStorage(); // new SortedArrayStorage();
 
     public static void main(String[] args) {
         final Resume r1 = new Resume("uuid1");
