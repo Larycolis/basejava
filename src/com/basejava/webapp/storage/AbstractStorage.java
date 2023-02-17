@@ -5,10 +5,6 @@ import com.basejava.webapp.exeption.NotExistStorageException;
 import com.basejava.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
-
-    @Override
-    public abstract void clear();
-
     @Override
     public final void save(Resume resume) {
         Object searchKey = getNotExistingSearchKey(resume.getUuid());
@@ -33,14 +29,6 @@ public abstract class AbstractStorage implements Storage {
         doDelete(searchKey);
     }
 
-    @Override
-    public abstract Resume[] getAll();
-
-    @Override
-    public abstract int size();
-
-    protected abstract Object getSearchKey(String uuid);
-
     protected abstract void doSave(Resume resume, Object searchKey);
 
     protected abstract void doUpdate(Resume resume, Object searchKey);
@@ -48,6 +36,8 @@ public abstract class AbstractStorage implements Storage {
     protected abstract Resume doGet(Object searchKey);
 
     protected abstract void doDelete(Object searchKey);
+
+    protected abstract Object getSearchKey(String uuid);
 
     protected abstract boolean isExist(Object searchKey);
 
