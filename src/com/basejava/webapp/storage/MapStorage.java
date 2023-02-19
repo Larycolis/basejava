@@ -16,7 +16,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void doSave(Resume resume, Object searchKey) {
-        storage.put((String) searchKey, resume);
+        storage.put(resume.getUuid(), resume);
     }
 
     @Override
@@ -34,6 +34,7 @@ public class MapStorage extends AbstractStorage {
         storage.remove((String) searchKey);
     }
 
+    // TODO: тест не проходит, нужно исправить реализацию метода getAll
     @Override
     public Resume[] getAll() {
         return storage.values().toArray(new Resume[0]);
