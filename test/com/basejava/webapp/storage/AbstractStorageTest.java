@@ -112,6 +112,12 @@ public abstract class AbstractStorageTest {
         storage.delete(UUID_NOT_EXIST);
     }
 
+    /*
+     * Тест getAll не всегда срабатывает на несортированных массивах,
+     * list и map т.к. ожидаемый массив заполнен значениями по порядку,
+     * а фактически массивы заполняются значениями случайным образом
+     */
+
     @Test
     public void getAll() {
         Resume[] expected = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
