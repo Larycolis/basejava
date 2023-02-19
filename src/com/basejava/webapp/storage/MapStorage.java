@@ -34,7 +34,6 @@ public class MapStorage extends AbstractStorage {
         storage.remove((String) searchKey);
     }
 
-    // TODO: тест не проходит, нужно исправить реализацию метода getAll
     @Override
     public Resume[] getAll() {
         return storage.values().toArray(new Resume[0]);
@@ -45,12 +44,6 @@ public class MapStorage extends AbstractStorage {
         return storage.size();
     }
 
-    /*
-     * реализация метода на данный момент ошибочная. дебагер показал, что key uuid1 сохраняется в хранилище как null
-     * key должен быть уникальным (предполагается, что в key сохранится uuid), но следующее резюме тоже сохраняется с
-     * key = null, поэтому падает ошибка "Resume [uuid] already exist"
-     * TODO: сделать так, чтобы в key сохранялся uuid
-     */
     protected String getSearchKey(String uuid) {
         Set<Map.Entry<String, Resume>> entries = storage.entrySet();
         for (Map.Entry<String, Resume> pair : entries) {
