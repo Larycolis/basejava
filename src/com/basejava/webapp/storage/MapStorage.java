@@ -4,7 +4,6 @@ import com.basejava.webapp.model.Resume;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class MapStorage extends AbstractStorage {
     protected final Map<String, Resume> storage = new HashMap<>();
@@ -45,14 +44,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     protected String getSearchKey(String uuid) {
-        Set<Map.Entry<String, Resume>> entries = storage.entrySet();
-        for (Map.Entry<String, Resume> pair : entries) {
-            String searchKey = pair.getKey();
-            if (uuid.equals(searchKey)) {
-                return searchKey;
-            }
-        }
-        return null;
+        return uuid;
     }
 
     @Override
