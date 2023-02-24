@@ -5,7 +5,7 @@ import java.util.UUID;
 /**
  * Initial resume class
  */
-public class Resume { // implements Comparable<Resume> {
+public class Resume {
 
     // Unique identifier
     private final String uuid;
@@ -42,8 +42,10 @@ public class Resume { // implements Comparable<Resume> {
         return uuid;
     }
 
-//    @Override
-//    public int compareTo(Resume resume) {
-//        return uuid.compareTo(resume.uuid);
-//    }
+/* класс Resume больше не реализует Comparable<Resume>, класс SortedArrayStorage реализует его в анонимном классе
+   @Override
+   public int compareTo(Resume resume) {
+        return uuid.compareTo(resume.uuid);
+    }
+ */
 }
