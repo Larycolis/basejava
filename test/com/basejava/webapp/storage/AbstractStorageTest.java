@@ -74,7 +74,7 @@ public abstract class AbstractStorageTest {
         } catch (StorageException e) {
             Assert.fail();
         }
-        storage.save(RESUME_3);
+        storage.save(new Resume());
     }
 
     @Test

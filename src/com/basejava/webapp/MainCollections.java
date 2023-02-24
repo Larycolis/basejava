@@ -47,5 +47,8 @@ public class MainCollections {
         for (Map.Entry<String, Resume> entry : map.entrySet()) {
             System.out.println(entry.getValue());
         }
+
+        List<Resume> resumes = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        System.out.printf("Second element in List<Resume> is: %s", resumes.get(1));
     }
 }
