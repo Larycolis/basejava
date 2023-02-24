@@ -63,7 +63,7 @@ public abstract class AbstractStorageTest {
         storage.save(RESUME_1);
     }
 
-    // тест saveOverflow только для классов с массивами
+    // TODO: remain only for Arrays implementations
     @Test(expected = StorageException.class)
     public void saveOverflow() {
         storage.clear();
@@ -117,7 +117,6 @@ public abstract class AbstractStorageTest {
      * list и map т.к. ожидаемый массив заполнен значениями по порядку,
      * а фактически массивы заполняются значениями случайным образом
      */
-
     @Test
     public void getAll() {
         Resume[] expected = new Resume[]{RESUME_1, RESUME_2, RESUME_3};

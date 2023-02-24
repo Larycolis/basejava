@@ -49,7 +49,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return (Integer) searchKey >= 0;
+    }
+
     protected abstract void insertResume(Resume resume, Integer searchKey);
 
     protected abstract void deleteResume(Integer searchKey);
+    protected abstract Integer getSearchKey(String uuid);
 }
