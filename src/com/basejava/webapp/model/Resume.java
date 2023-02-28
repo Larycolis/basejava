@@ -19,6 +19,19 @@ public class Resume {
         this.uuid = uuid;
     }
 
+    public Resume(String uuid, String fullName) {
+        if (uuid == null || uuid.equals("")){
+            this.uuid = UUID.randomUUID().toString();
+        } else {
+            this.uuid = uuid;
+        }
+        this.fullName = fullName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
     public String getUuid() {
         return uuid;
     }
