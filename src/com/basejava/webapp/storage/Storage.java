@@ -4,7 +4,6 @@ import com.basejava.webapp.model.Resume;
 
 import java.util.List;
 
-// TODO refactoring
 public interface Storage {
     void clear();
 
@@ -16,8 +15,7 @@ public interface Storage {
 
     void delete(String uuid);
 
-//    return list sorted by fullName
+//    TODO: return list, sorted by fullName
     List<Resume> getAllSorted();
-    Resume[] getAll();
     int size();
 }

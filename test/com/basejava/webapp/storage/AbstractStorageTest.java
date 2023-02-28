@@ -7,6 +7,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 public abstract class AbstractStorageTest {
 
     protected final Storage storage;
@@ -45,9 +48,9 @@ public abstract class AbstractStorageTest {
     public void clear() {
         storage.clear();
         assertSize(0);
-        Resume[] actual = storage.getAll();
+        List<Resume> actual = storage.getAllSorted();
         Resume[] expected = new Resume[0];
-        Assert.assertEquals(expected.length, actual.length);
+        Assert.assertEquals(expected.length, actual.size());
     }
 
     @Test
@@ -97,17 +100,13 @@ public abstract class AbstractStorageTest {
         storage.delete(UUID_NOT_EXIST);
     }
 
-    /*
-     * Тест getAll не всегда срабатывает на несортированных массивах,
-     * list и map т.к. ожидаемый массив заполнен значениями по порядку,
-     * а фактически массивы заполняются значениями случайным образом
-     */
+    // not for MapUuidStorageTest
     @Test
-    public void getAll() {
-        Resume[] expected = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
-        Resume[] actual = storage.getAll();
-        Assert.assertEquals(3, actual.length);
-        Assert.assertArrayEquals(expected, actual);
+    public void getAllSorted() {
+        List<Resume> expected = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        List<Resume> actual = storage.getAllSorted();
+        Assert.assertEquals(3, actual.size());
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
