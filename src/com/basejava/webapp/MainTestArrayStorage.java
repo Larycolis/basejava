@@ -1,14 +1,14 @@
 package com.basejava.webapp;
 
 import com.basejava.webapp.model.Resume;
-import com.basejava.webapp.storage.MapUuidStorage;
+import com.basejava.webapp.storage.MapResumeStorage;
 import com.basejava.webapp.storage.Storage;
 
 /**
  * Test for your ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    private final static Storage ARRAY_STORAGE = new MapUuidStorage(); // new ListStorage(); // new ArrayStorage(); // new SortedArrayStorage();
+    private final static Storage ARRAY_STORAGE = new MapResumeStorage(); // new MapUuidStorage(); // new ListStorage(); // new ArrayStorage(); // new SortedArrayStorage();
 
     public static void main(String[] args) {
         final Resume r1 = new Resume("uuid1", "Иванов Иван Иванович");
@@ -22,7 +22,7 @@ public class MainTestArrayStorage {
         System.out.printf("Get r1 \n uuid: %s \n fullName: %s \n", ARRAY_STORAGE.get(r1.getUuid()), r1.getFullName());
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
-        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
+        //System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
 //        check binarySearch
 //        System.out.println("Index of r3: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r3));
