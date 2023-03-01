@@ -20,7 +20,7 @@ public class Resume {
     }
 
     public Resume(String uuid, String fullName) {
-        if (uuid == null || uuid.equals("")){
+        if (uuid == null || uuid.equals("")) {
             this.uuid = UUID.randomUUID().toString();
         } else {
             this.uuid = uuid;

@@ -40,7 +40,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
+    protected List<Resume> doGetAll() {
         storage = Arrays.copyOfRange(storage, 0, size);
         return Arrays.asList(storage);
     }
@@ -57,5 +57,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract void insertResume(Resume resume, Integer searchKey);
 
     protected abstract void deleteResume(Integer searchKey);
+
     protected abstract Integer getSearchKey(String uuid);
 }

@@ -5,13 +5,12 @@ import com.basejava.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Test;
 
-public abstract class AbstractArrayStorageTest extends AbstractStorageTest{
+public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
 
     protected AbstractArrayStorageTest(Storage storage) {
         super(storage);
     }
 
-    // Done
     @Test(expected = StorageException.class)
     public void saveOverflow() {
         storage.clear();

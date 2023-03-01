@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//key - uuid, searchKey - uuid
+// key - uuid, searchKey - uuid
 
 public class MapUuidStorage extends AbstractStorage {
     protected final Map<String, Resume> storage = new HashMap<>();
@@ -38,7 +38,7 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
+    protected List<Resume> doGetAll() {
         return new ArrayList<>(storage.values());
     }
 

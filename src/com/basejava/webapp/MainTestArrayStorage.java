@@ -22,7 +22,7 @@ public class MainTestArrayStorage {
         System.out.printf("Get r1 \n uuid: %s \n fullName: %s \n", ARRAY_STORAGE.get(r1.getUuid()), r1.getFullName());
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
-        //System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
+        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
 //        check binarySearch
 //        System.out.println("Index of r3: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r3));
