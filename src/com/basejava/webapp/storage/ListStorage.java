@@ -5,6 +5,8 @@ import com.basejava.webapp.model.Resume;
 import java.util.ArrayList;
 import java.util.List;
 
+// searchKey - index
+
 public class ListStorage extends AbstractStorage {
 
     protected final List<Resume> storage = new ArrayList<>();

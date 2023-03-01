@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//searchKey - uuid
+//key - uuid, searchKey - uuid
 
 public class MapUuidStorage extends AbstractStorage {
     protected final Map<String, Resume> storage = new HashMap<>();

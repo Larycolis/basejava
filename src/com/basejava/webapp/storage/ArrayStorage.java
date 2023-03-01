@@ -5,6 +5,9 @@ import com.basejava.webapp.model.Resume;
 /**
  * Array based storage for Resumes
  */
+
+// searchKey - index
+
 public class ArrayStorage extends AbstractArrayStorage {
     @Override
     protected void insertResume(Resume resume, Integer searchKey) {
