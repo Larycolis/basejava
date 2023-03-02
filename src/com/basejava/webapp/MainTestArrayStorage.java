@@ -8,7 +8,7 @@ import com.basejava.webapp.storage.Storage;
  * Test for your ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    private final static Storage ARRAY_STORAGE = new SortedArrayStorage(); // new MapResumeStorage(); // new MapUuidStorage(); // new ListStorage(); // new ArrayStorage(); //
+    private final static Storage ARRAY_STORAGE = new SortedArrayStorage(); // new MapUuidStorage(); // new ListStorage(); // new ArrayStorage(); // new MapResumeStorage(); //
 
     public static void main(String[] args) {
         final Resume r1 = new Resume("uuid1", "Иванов Иван Иванович");
@@ -22,7 +22,7 @@ public class MainTestArrayStorage {
         System.out.printf("Get r1 \n uuid: %s \n fullName: %s \n", ARRAY_STORAGE.get(r1.getUuid()), r1.getFullName());
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
-        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
+//        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
 //        check binarySearch
 //        System.out.println("Index of r3: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r3));
@@ -41,7 +41,7 @@ public class MainTestArrayStorage {
     static void printAll() {
         System.out.println("\nGet All");
         for (Resume r : ARRAY_STORAGE.getAllSorted()) {
-            System.out.println(r);
+            System.out.printf(r + ": %s, %s \n", r.getUuid(),r.getFullName());
         }
     }
 }
