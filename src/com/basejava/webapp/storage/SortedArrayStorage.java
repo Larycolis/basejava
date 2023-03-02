@@ -27,7 +27,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected Integer getSearchKey(String uuid) {
-        Resume searchKey = new Resume(uuid); // тут проблема т.к. конструктора Resume(String uuid) больше нет
+        Resume searchKey = new Resume(uuid, "Иванов Иван Иванович"); // тут проблема т.к. конструктора Resume(String uuid) больше нет
         return Arrays.binarySearch(storage, 0, size, searchKey, RESUME_COMPARATOR); // а сюда нужно подавать объект
     }
 
