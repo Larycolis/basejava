@@ -1,14 +1,14 @@
 package com.basejava.webapp;
 
 import com.basejava.webapp.model.Resume;
-import com.basejava.webapp.storage.MapResumeStorage;
+import com.basejava.webapp.storage.SortedArrayStorage;
 import com.basejava.webapp.storage.Storage;
 
 /**
  * Test for your ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    private final static Storage ARRAY_STORAGE = new MapResumeStorage(); // new MapUuidStorage(); // new ListStorage(); // new ArrayStorage(); // new SortedArrayStorage();
+    private final static Storage ARRAY_STORAGE = new SortedArrayStorage(); // new MapResumeStorage(); // new MapUuidStorage(); // new ListStorage(); // new ArrayStorage(); //
 
     public static void main(String[] args) {
         final Resume r1 = new Resume("uuid1", "Иванов Иван Иванович");
