@@ -55,6 +55,7 @@ public class MainCollections {
         }
 
         List<Resume> resumes = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        // resumes = new ArrayList<>(); // diamond - пустой дженерик
         resumes.remove(1); // produce 'UnsupportedOperationException'
         System.out.println(resumes);
         System.out.printf("Second element in List<Resume> is: %s", resumes.get(1));

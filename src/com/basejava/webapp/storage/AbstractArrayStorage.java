@@ -6,7 +6,7 @@ import com.basejava.webapp.model.Resume;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
@@ -16,25 +16,25 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    protected void doSave(Resume resume, Object searchKey) {
+    protected void doSave(Resume resume, Integer searchKey) {
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("Error: storage overflow and can't hold ", resume.getUuid());
         } else {
-            insertResume(resume, (Integer) searchKey);
+            insertResume(resume, searchKey);
             size++;
         }
     }
 
-    protected void doUpdate(Resume resume, Object searchKey) {
-        storage[(Integer) searchKey] = resume;
+    protected void doUpdate(Resume resume, Integer searchKey) {
+        storage[searchKey] = resume;
     }
 
-    protected Resume doGet(Object searchKey) {
-        return storage[(Integer) searchKey];
+    protected Resume doGet(Integer searchKey) {
+        return storage[searchKey];
     }
 
-    protected void doDelete(Object searchKey) {
-        deleteResume((Integer) searchKey);
+    protected void doDelete(Integer searchKey) {
+        deleteResume(searchKey);
         storage[size - 1] = null;
         size--;
     }
@@ -49,8 +49,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return (Integer) searchKey >= 0;
+    protected boolean isExist(Integer searchKey) {
+        return searchKey >= 0;
     }
 
     protected abstract void insertResume(Resume resume, Integer searchKey);
