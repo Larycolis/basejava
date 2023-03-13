@@ -37,9 +37,6 @@ public class Period {
 
     @Override
     public String toString() {
-        return "Period{" +
-                "beginning=" + beginning +
-                ", ending=" + ending +
-                '}';
+        return "" + beginning + ending;
     }
 }

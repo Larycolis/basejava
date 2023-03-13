@@ -29,8 +29,6 @@ public class TextSection extends AbstractSection {
 
     @Override
     public String toString() {
-        return "TextSection{" +
-                "sectionContent='" + sectionContent + '\'' +
-                '}';
+        return sectionContent;
     }
 }

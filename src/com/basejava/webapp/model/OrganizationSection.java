@@ -30,8 +30,6 @@ public class OrganizationSection extends AbstractSection {
 
     @Override
     public String toString() {
-        return "OrganizationSection{" +
-                "sectionContent=" + sectionContent +
-                '}';
+        return "" + sectionContent;
     }
 }

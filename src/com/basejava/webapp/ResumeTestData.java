@@ -1,46 +1,128 @@
 package com.basejava.webapp;
 
-import com.basejava.webapp.model.Resume;
+import com.basejava.webapp.model.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.time.LocalDate;
+import java.util.*;
+
+import static com.basejava.webapp.model.ContactType.*;
+import static com.basejava.webapp.model.SectionType.*;
 
 public class ResumeTestData {
+    public static void main(String[] args) {
+        String fullName = "Григорий Кислин";
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        Resume resume;
+        Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+        contacts.put(CELLPHONE, "+7(921) 855-0482");
+        contacts.put(SKYPE, "skype:grigory.kislin");
+        contacts.put(EMAIL, "gkislin@yandex.ru");
+        contacts.put(LINKEDIN, "https://www.linkedin.com/in/gkislin/");
+        contacts.put(GITHUB, "https://github.com/gkislin");
+        contacts.put(STACKOVERFLOW, "https://stackoverflow.com/users/548473/grigory-kislin");
+        contacts.put(HOMEPAGE, "https://gkislin.ru/");
 
-        while (true) {
-            System.out.println("Введите полное имя: ");
-            String[] fullNameParams = br.readLine().split(" ");
-            if (fullNameParams.length < 2 || fullNameParams.length > 3) {
-                System.out.println("Некорректное полное имя.");
-                continue;
-            }
+        AbstractSection personalContent = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям ");
+        AbstractSection objectiveContent = new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры ");
 
-            String fullName = Arrays.toString(fullNameParams);
-            resume = new Resume(fullName);
-            System.out.printf(resume.getFullName());
+        List<String> achievementContent = new ArrayList<>();
+        achievementContent.add("- Организация команды и успешная реализация Java проектов для сторонних заказчиков: приложения автопарк на стеке Spring Cloud/микросервисы, система мониторинга показателей спортсменов на Spring Boot, участие в проекте МЭШ на Play-2, многомодульный Spring Boot + Vaadin проект для комплексных DIY смет");
+        achievementContent.add("\n - С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 3500 выпускников");
+        achievementContent.add("\n - Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk");
+        achievementContent.add("\n - Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера");
+        achievementContent.add("\n - Реализация c нуля Rich Internet Application приложения на стеке технологий JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Commet, HTML5, Highstock для алгоритмического трейдинга");
+        achievementContent.add("\n - Создание JavaEE фреймворка для отказоустойчивого взаимодействия слабо-связанных сервисов (SOA-base архитектура, JAX-WS, JMS, AS Glassfish). Сбор статистики сервисов и информации о состоянии через систему мониторинга Nagios. Реализация онлайн клиента для администрирования и мониторинга системы по JMX (Jython/ Django)");
+        achievementContent.add("\n - Реализация протоколов по приему платежей всех основных платежных системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа");
 
-            System.out.println("Заполните контактную информацию, выбрав тип контакта - ( Тел. | Skype | Email | LinkedIn | GitHub | Stackoverflow | Домашняя страница): ");
-            String[] contactParams = br.readLine().split(" ");
-            if (contactParams.length < 1 || contactParams.length > 2) {
-                System.out.println("Неверная команда.");
-                continue;
-            }
+        List<String> qualificationsContent = new ArrayList<>();
+        qualificationsContent.add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2");
+        qualificationsContent.add("\n - Version control: Subversion, Git, Mercury, ClearCase, Perforce");
+        qualificationsContent.add("\n - DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle, MySQL, SQLite, MS SQL, HSQLDB");
+        qualificationsContent.add("\n - Languages: Java, Scala, Python/Jython/PL-Python, JavaScript, Groovy");
+        qualificationsContent.add("\n - XML/XSD/XSLT, SQL, C/C++, Unix shell scripts");
+        qualificationsContent.add("\n - Java Frameworks: Java 8 (Time API, Streams), Guava, Java Executor, MyBatis, Spring (MVC, Security, Data, Clouds, Boot), JPA (Hibernate, EclipseLink), Guice, GWT(SmartGWT, ExtGWT/GXT), Vaadin, Jasperreports, Apache Commons, Eclipse SWT, JUnit, Selenium (htmlelements)");
+        qualificationsContent.add("\n - Python: Django");
+        qualificationsContent.add("\n - JavaScript: jQuery, ExtJS, Bootstrap.js, underscore.js");
+        qualificationsContent.add("\n - Scala: SBT, Play2, Specs2, Anorm, Spray, Akka");
+        qualificationsContent.add("\n - Технологии: Servlet, JSP/JSTL, JAX-WS, REST, EJB, RMI, JMS, JavaMail, JAXB, StAX, SAX, DOM, XSLT, MDB, JMX, JDBC, JPA, JNDI, JAAS, SOAP, AJAX, Commet, HTML5, ESB, CMIS, BPMN2, LDAP, OAuth1, OAuth2, JWT");
+        qualificationsContent.add("\n - Инструменты: Maven + plugin development, Gradle, настройка Ngnix");
+        qualificationsContent.add("\n - Администрирование Hudson/Jenkins, Ant + custom task, SoapUI, JPublisher, Flyway, Nagios, iReport, OpenCmis, Bonita, pgBouncer");
+        qualificationsContent.add("\n - Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектрирования, архитектурных шаблонов, UML, функционального программирования");
+        qualificationsContent.add("\n - Родной русский, английский \"upper intermediate\"");
 
-            switch (contactParams[0]) {
-                case "Тел.":
-                case "Skype":
-                case "Email":
-                case "LinkedIn":
-                case "GitHub":
-                case "Stackoverflow":
-                case "Домашняя":
-            }
+        AbstractSection achievement = new ListSection(achievementContent);
+        AbstractSection qualifications = new ListSection(qualificationsContent);
+
+        List<Period> expData1 = new ArrayList<>();
+        expData1.add(new Period(LocalDate.of(1997, 9, 1), LocalDate.of(2005, 1, 1)));
+        List<Period> expData2 = new ArrayList<>();
+        expData2.add(new Period(LocalDate.of(2005, 1, 1), LocalDate.of(2007, 2, 1)));
+        List<Period> expData3 = new ArrayList<>();
+        expData3.add(new Period(LocalDate.of(2007, 3, 1), LocalDate.of(2008, 6, 1)));
+        List<Period> expData4 = new ArrayList<>();
+        expData4.add(new Period(LocalDate.of(2008, 6, 1), LocalDate.of(2010, 12, 1)));
+        List<Period> expData5 = new ArrayList<>();
+        expData5.add(new Period(LocalDate.of(2010, 12, 1), LocalDate.of(2012, 4, 1)));
+        List<Period> expData6 = new ArrayList<>();
+        expData6.add(new Period(LocalDate.of(2012, 4, 1), LocalDate.of(2014, 10, 1)));
+        List<Period> expData7 = new ArrayList<>();
+        expData7.add(new Period(LocalDate.of(2014, 10, 1), LocalDate.of(2016, 1, 1)));
+        List<Period> expData8 = new ArrayList<>();
+        expData8.add(new Period(LocalDate.of(2013, 10, 1), LocalDate.now()));
+
+        List<Period> eduData1 = new ArrayList<>();
+        eduData1.add(new Period(LocalDate.of(1984, 9, 1), LocalDate.of(1987, 6, 1)));
+        List<Period> eduData2 = new ArrayList<>();
+        eduData2.add(new Period(LocalDate.of(1987, 9, 1), LocalDate.of(1993, 7, 1)));
+        List<Period> eduData3 = new ArrayList<>();
+        eduData3.add(new Period(LocalDate.of(1993, 9, 1), LocalDate.of(1996, 7, 1)));
+        List<Period> eduData4 = new ArrayList<>();
+        eduData4.add(new Period(LocalDate.of(1997, 9, 1), LocalDate.of(1998, 3, 1)));
+        List<Period> eduData5 = new ArrayList<>();
+        eduData5.add(new Period(LocalDate.of(2005, 1, 1), LocalDate.of(2005, 4, 1)));
+        List<Period> eduData6 = new ArrayList<>();
+        eduData6.add(new Period(LocalDate.of(2011, 3, 1), LocalDate.of(2011, 4, 1)));
+        List<Period> eduData7 = new ArrayList<>();
+        eduData7.add(new Period(LocalDate.of(2013, 3, 1), LocalDate.of(2013, 5, 1)));
+
+        List<Organization> expSectionContent = new ArrayList<>();
+        expSectionContent.add(new Organization(expData8, " - Java Online Projects. ", "Автор проекта. ", "Создание, организация и проведение Java онлайн проектов и стажировок"));
+        expSectionContent.add(new Organization(expData7, " - Wrike. ", "Старший разработчик (backend). ", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO"));
+        expSectionContent.add(new Organization(expData6, " - RIT Center. ", "Java архитектор. ", "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python"));
+        expSectionContent.add(new Organization(expData5, " - Luxoft (Deutsche Bank). ", "Ведущий программист. ", "Участие в проекте Deutsche Bank CRM (WebLogic, Hibernate, Spring, Spring MVC, SmartGWT, GWT, Jasper, Oracle). Реализация клиентской и серверной части CRM. Реализация RIA-приложения для администрирования, мониторинга и анализа результатов в области алгоритмического трейдинга. JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Highstock, Commet, HTML5"));
+        expSectionContent.add(new Organization(expData4, " - Yota. ", "Ведущий специалист. ", "Дизайн и имплементация Java EE фреймворка для отдела \"Платежные Системы\" (GlassFish v2.1, v3, OC4J, EJB3, JAX-WS RI 2.1, Servlet 2.4, JSP, JMX, JMS, Maven2). Реализация администрирования, статистики и мониторинга фреймворка. Разработка online JMX клиента (Python/ Jython, Django, ExtJS)"));
+        expSectionContent.add(new Organization(expData3, " - Enkata. ", "Разработчик ПО. ", "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей кластерного J2EE приложения (OLAP, Data mining)"));
+        expSectionContent.add(new Organization(expData2, " - Siemens AG. ", "Разработчик ПО. ", "Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix)"));
+        expSectionContent.add(new Organization(expData1, " - Alcatel. ", "Инженер по аппаратному и программному тестированию. ", "Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM)"));
+
+        List<Organization> eduSectionContent = new ArrayList<>();
+        eduSectionContent.add(new Organization(eduData7, "- Coursera. ", "", "'Functional Programming Principles in Scala' by Martin Odersky"));
+        eduSectionContent.add(new Organization(eduData6, "- Luxoft. ", "", "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML'"));
+        eduSectionContent.add(new Organization(eduData5, "- Siemens AG. ", "", "3 месяца обучения мобильным IN сетям (Берлин)"));
+        eduSectionContent.add(new Organization(eduData4, "- Alcatel. ", "", "6 месяцев обучения цифровым телефонным сетям (Москва)"));
+        eduSectionContent.add(new Organization(eduData3, "- Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики. ", "Инженер (программист Fortran, C)", ""));
+        eduSectionContent.add(new Organization(eduData2, "- Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики. ", "Аспирантура (программист С, С++)", ""));
+        eduSectionContent.add(new Organization(eduData1, "- Заочная физико-техническая школа при МФТИ. ", "", "Закончил с отличием"));
+
+        AbstractSection experience = new OrganizationSection(expSectionContent);
+        AbstractSection education = new OrganizationSection(eduSectionContent);
+
+        Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
+        sections.put(PERSONAL, personalContent);
+        sections.put(OBJECTIVE, objectiveContent);
+        sections.put(ACHIEVEMENT, achievement);
+        sections.put(QUALIFICATIONS, qualifications);
+        sections.put(EXPERIENCE, experience);
+        sections.put(EDUCATION, education);
+
+        Resume resume = new Resume(fullName, contacts, sections);
+        System.out.println("Идентификационный номер резюме: " + resume.getUuid());
+        System.out.println("Полное имя: " + resume.getFullName() + "\n");
+        for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+            System.out.println(entry.getKey().getType() + entry.getValue());
+        }
+        System.out.println(" ");
+        for (Map.Entry<SectionType, AbstractSection> entry : sections.entrySet()) {
+            System.out.println(entry.getKey().getTitle() + "\n" + entry.getValue());
         }
     }
 }
