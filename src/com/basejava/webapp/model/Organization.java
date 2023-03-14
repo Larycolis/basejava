@@ -17,16 +17,14 @@ public class Organization {
         this.period = period;
     }
 
-    public List<Period> getPeriod() {
-        return period;
-    }
-
     public String getName() {
         return name;
     }
-
     public String getWebsite() {
         return website;
+    }
+    public List<Period> getPeriod() {
+        return period;
     }
 
     @Override

@@ -10,7 +10,7 @@ public class TextSection extends AbstractSection {
         this.text = text;
     }
 
-    public String gettext() {
+    public String getText() {
         return text;
     }
 
