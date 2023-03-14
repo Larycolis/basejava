@@ -10,9 +10,9 @@ public class Resume implements Comparable<Resume> {
     private final String uuid; // Unique identifier
     private final String fullName;
 
-    private Map<ContactType, String> contacts = new EnumMap<ContactType, String>(ContactType.class);
+    private Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
 
-    private Map<SectionType, AbstractSection> sections = new EnumMap<SectionType, AbstractSection>(SectionType.class);
+    private Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -79,7 +79,7 @@ public class Resume implements Comparable<Resume> {
         int cmp = fullName.compareTo(o.fullName);
         return cmp != 0 ? cmp : uuid.compareTo(o.uuid);
     }
-/* класс Resume больше не реализует Comparable<Resume>, класс SortedArrayStorage реализует его в анонимном классе
+/* класс SortedArrayStorage реализует Comparable<Resume> в анонимном классе
    @Override
    public int compareTo(Resume resume) {
         return uuid.compareTo(resume.uuid);

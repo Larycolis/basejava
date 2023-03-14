@@ -4,38 +4,29 @@ import java.util.List;
 import java.util.Objects;
 
 public class Organization {
+    private final String name;
+    private final String website;
     private final List<Period> period;
 
-    private final String orgName;
-    private final String role;
-    private final String content;
-
-
-    public Organization(List<Period> period, String orgName, String role, String content) {
+    public Organization(String name, String website, List<Period> period) {
+        Objects.requireNonNull(name, "organization name must not be null");
+        Objects.requireNonNull(website, "website must not be null");
         Objects.requireNonNull(period, "period must not be null");
-        Objects.requireNonNull(orgName, "organization name must not be null");
-        Objects.requireNonNull(role, "role must not be null");
-        Objects.requireNonNull(content, "content must not be null");
+        this.name = name;
+        this.website = website;
         this.period = period;
-        this.orgName = orgName;
-        this.role = role;
-        this.content = content;
     }
 
     public List<Period> getPeriod() {
         return period;
     }
 
-    public String getOrgName() {
-        return orgName;
+    public String getName() {
+        return name;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public String getContent() {
-        return content;
+    public String getWebsite() {
+        return website;
     }
 
     @Override
@@ -43,16 +34,16 @@ public class Organization {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
-        return period.equals(that.period) && orgName.equals(that.orgName) && role.equals(that.role) && content.equals(that.content);
+        return period.equals(that.period) && name.equals(that.name) && website.equals(that.website);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(period, orgName, role, content);
+        return Objects.hash(period, name, website);
     }
 
     @Override
     public String toString() {
-        return "\n" + period + "\n" + orgName + role + content;
+        return "\n" + name + website + "\n" + period;
     }
 }

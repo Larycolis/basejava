@@ -3,15 +3,15 @@ package com.basejava.webapp.model;
 import java.util.Objects;
 
 public class TextSection extends AbstractSection {
-    private final String sectionContent;
+    private final String text;
 
-    public TextSection(String sectionContent) {
-        Objects.requireNonNull(sectionContent, "section content must not be null");
-        this.sectionContent = sectionContent;
+    public TextSection(String text) {
+        Objects.requireNonNull(text, "section content must not be null");
+        this.text = text;
     }
 
-    public String getSectionContent() {
-        return sectionContent;
+    public String gettext() {
+        return text;
     }
 
     @Override
@@ -19,16 +19,16 @@ public class TextSection extends AbstractSection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TextSection that = (TextSection) o;
-        return sectionContent.equals(that.sectionContent);
+        return text.equals(that.text);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sectionContent);
+        return Objects.hash(text);
     }
 
     @Override
     public String toString() {
-        return sectionContent;
+        return text;
     }
 }

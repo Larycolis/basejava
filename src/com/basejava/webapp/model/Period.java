@@ -4,22 +4,36 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Period {
-    private final LocalDate beginning;
-    private final LocalDate ending;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
+    private final String title;
+    private final String description;
 
-    public Period(LocalDate beginning, LocalDate ending) {
-        Objects.requireNonNull(beginning, "beginning LocaleDate must not be null");
-        Objects.requireNonNull(ending, "ending LocaleDate must not be null");
-        this.beginning = beginning;
-        this.ending = ending;
+    public Period(LocalDate startDate, LocalDate endDate, String title, String description) {
+        Objects.requireNonNull(startDate, "startDate LocaleDate must not be null");
+        Objects.requireNonNull(endDate, "endDate LocaleDate must not be null");
+        Objects.requireNonNull(title, "title LocaleDate must not be null");
+        Objects.requireNonNull(description, "description LocaleDate must not be null");
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.title = title;
+        this.description = description;
     }
 
-    public LocalDate getBeginning() {
-        return beginning;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public LocalDate getEnding() {
-        return ending;
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     @Override
@@ -27,16 +41,16 @@ public class Period {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Period period = (Period) o;
-        return beginning.equals(period.beginning) && ending.equals(period.ending);
+        return Objects.equals(startDate, period.startDate) && Objects.equals(endDate, period.endDate) && Objects.equals(title, period.title) && Objects.equals(description, period.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(beginning, ending);
+        return Objects.hash(startDate, endDate, title, description);
     }
 
     @Override
     public String toString() {
-        return "" + beginning + ending;
+        return "" + startDate + endDate + "\n" + title + description;
     }
 }

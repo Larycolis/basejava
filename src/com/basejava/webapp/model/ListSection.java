@@ -4,15 +4,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class ListSection extends AbstractSection {
-    private final List<String> sectionContent;
+    private final List<String> list;
 
-    public ListSection(List<String> sectionContent) {
-        Objects.requireNonNull(sectionContent, "section content must not be null");
-        this.sectionContent = sectionContent;
+    public ListSection(List<String> list) {
+        Objects.requireNonNull(list, "section content must not be null");
+        this.list = list;
     }
 
-    public List<String> getSectionContent() {
-        return sectionContent;
+    public List<String> getlist() {
+        return list;
     }
 
     @Override
@@ -20,16 +20,16 @@ public class ListSection extends AbstractSection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ListSection that = (ListSection) o;
-        return sectionContent.equals(that.sectionContent);
+        return list.equals(that.list);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sectionContent);
+        return Objects.hash(list);
     }
 
     @Override
     public String toString() {
-        return "" + sectionContent;
+        return "" + list;
     }
 }
