@@ -1,13 +1,16 @@
 package com.basejava.webapp.model;
 
 public enum ContactType {
-    CELLPHONE("Тел.: "),
+    // в настоящее время уже практически не используется
+    //HOME_PHONE("Домашний: "),
+    PHONE("Тел.: "),
+    CELLPHONE("Мобильный: "),
     SKYPE("Skype.: "),
     EMAIL("Почта: "),
     LINKEDIN("Профиль LinkedIn: "),
     GITHUB("Профиль GitHub: "),
     STACKOVERFLOW("Профиль Stackoverflow: "),
-    HOMEPAGE("Домашняя страница: ");
+    HOME_PAGE("Домашняя страница: ");
 
     private final String type;
 

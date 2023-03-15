@@ -1,47 +1,53 @@
 package com.basejava.webapp.model;
 
-import java.util.List;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Organization {
-    private final String name;
-    private final String website;
-    private final List<Period> period;
+    private final Link homePage;
 
-    public Organization(String name, String website, List<Period> period) {
-        Objects.requireNonNull(name, "organization name must not be null");
-        Objects.requireNonNull(website, "website must not be null");
-        Objects.requireNonNull(period, "period must not be null");
-        this.name = name;
-        this.website = website;
-        this.period = period;
-    }
+    private final LocalDate startDate;
+    private final LocalDate endDate;
+    private final String title;
+    private final String description;
 
-    public String getName() {
-        return name;
-    }
-    public String getWebsite() {
-        return website;
-    }
-    public List<Period> getPeriod() {
-        return period;
+    public Organization(String name, String url, LocalDate startDate, LocalDate endDate, String title, String description) {
+        Objects.requireNonNull(startDate, "startDate LocaleDate must not be null");
+        Objects.requireNonNull(endDate, "endDate LocaleDate must not be null");
+        Objects.requireNonNull(title, "title LocaleDate must not be null");
+        this.homePage = new Link(name, url);
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.title = title;
+        this.description = description;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Organization that = (Organization) o;
-        return period.equals(that.period) && name.equals(that.name) && website.equals(that.website);
+
+        if (!homePage.equals(that.homePage)) return false;
+        if (!startDate.equals(that.startDate)) return false;
+        if (!endDate.equals(that.endDate)) return false;
+        if (!title.equals(that.title)) return false;
+        return Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(period, name, website);
+        int result = homePage.hashCode();
+        result = 31 * result + startDate.hashCode();
+        result = 31 * result + endDate.hashCode();
+        result = 31 * result + title.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
-        return "\n" + name + website + "\n" + period;
+        return "\n" + homePage + "\n" + startDate + endDate + "\n" + title + "\n" + description;
     }
 }
