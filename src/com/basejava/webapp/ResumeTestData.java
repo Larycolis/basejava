@@ -127,5 +127,10 @@ public class ResumeTestData {
         for (Map.Entry<SectionType, AbstractSection> entry : sections.entrySet()) {
             System.out.println(entry.getKey().getTitle() + "\n" + entry.getValue());
         }
+
+        // проверка вывода значений enum ContactType
+//        for (ContactType ct : ContactType.values()) {
+//            System.out.println(ct);
+//        }
     }
 }
