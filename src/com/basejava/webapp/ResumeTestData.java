@@ -13,7 +13,7 @@ import static com.basejava.webapp.model.SectionType.*;
 
 public class ResumeTestData {
     public static void main(String[] args) {
-        String fullName = "Григорий Кислин";
+        long start = System.currentTimeMillis();
 
         Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
         contacts.put(CELLPHONE, "+7(921) 855-0482");
@@ -85,6 +85,8 @@ public class ResumeTestData {
         sections.put(EXPERIENCE, experience);
         sections.put(EDUCATION, education);
 
+        String fullName = "Григорий Кислин";
+
         Resume resume = new Resume(fullName, contacts, sections);
         System.out.println("Идентификационный номер резюме: " + resume.getUuid());
         System.out.println("Полное имя: " + resume.getFullName() + "\n");
@@ -95,6 +97,8 @@ public class ResumeTestData {
         for (Map.Entry<SectionType, AbstractSection> entry : sections.entrySet()) {
             System.out.println(entry.getKey().getTitle() + "\n" + entry.getValue());
         }
+
+        System.out.println(System.currentTimeMillis() - start);
 
         // проверка вывода значений enum ContactType
 //        for (ContactType ct : ContactType.values()) {
