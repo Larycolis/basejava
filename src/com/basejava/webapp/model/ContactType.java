@@ -5,12 +5,12 @@ public enum ContactType {
     //HOME_PHONE("Домашний: "),
     PHONE("Тел.: "),
     CELLPHONE("Мобильный: "),
-    SKYPE("Skype.: "),
+    SKYPE("Skype: "),
     EMAIL("Почта: "),
-    LINKEDIN("Профиль LinkedIn: "),
-    GITHUB("Профиль GitHub: "),
-    STACKOVERFLOW("Профиль Stackoverflow: "),
-    HOME_PAGE("Домашняя страница: ");
+    LINKEDIN("Профиль LinkedIn "),
+    GITHUB("Профиль GitHub "),
+    STACKOVERFLOW("Профиль Stackoverflow "),
+    HOME_PAGE("Домашняя страница ");
 
     private final String type;
 
