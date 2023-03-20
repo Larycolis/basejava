@@ -11,12 +11,12 @@ import java.util.Objects;
 
 // searchKey - File(directory, uuid)
 
-public abstract class AbstractFileStorage extends AbstractStorage<File>{
+public abstract class AbstractFileStorage extends AbstractStorage<File> {
     private final File directory;
 
     protected AbstractFileStorage(File directory) {
         Objects.requireNonNull(directory, "directory must not be null");
-        if (!directory.isDirectory()){
+        if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + "is not directory");
         }
         if (!directory.canRead() || !directory.canWrite()) {
@@ -101,5 +101,6 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>{
     }
 
     protected abstract void doWrite(Resume resume, File searchKey) throws IOException; // пока нет реализации метода
-    protected  abstract Resume doRead(File searchKey) throws IOException; // пока нет реализации метода
+
+    protected abstract Resume doRead(File searchKey) throws IOException; // пока нет реализации метода
 }

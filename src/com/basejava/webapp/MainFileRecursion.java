@@ -6,7 +6,7 @@ import java.util.List;
 
 public class MainFileRecursion {
     public static void main(String[] args) {
-        // TODO: сделать рекурсивный обход и вывод имени файлов в каталогах и подкаталогах (корневой каталоог - мой проек)
+        //TODO: сделать рекурсивный обход и вывод имени файлов в каталогах и подкаталогах (корневой каталоог - мой проек)
         long start = System.currentTimeMillis();
         File project = new File("C:\\Users\\Евгения\\IdeaProjects\\basejava");
         List<File> result = new ArrayList<>();
