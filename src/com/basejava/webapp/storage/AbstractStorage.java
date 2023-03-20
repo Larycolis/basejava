@@ -4,6 +4,7 @@ import com.basejava.webapp.exeption.ExistStorageException;
 import com.basejava.webapp.exeption.NotExistStorageException;
 import com.basejava.webapp.model.Resume;
 
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -54,7 +55,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract void doUpdate(Resume resume, SK searchKey);
 
-    protected abstract Resume doGet(SK searchKey);
+    protected abstract Resume doGet(SK searchKey) throws IOException;
 
     protected abstract void doDelete(SK searchKey);
 

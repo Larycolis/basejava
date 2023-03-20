@@ -5,11 +5,15 @@ import com.basejava.webapp.model.Resume;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+// searchKey - File(directory, uuid)
+
 public abstract class AbstractFileStorage extends AbstractStorage<File>{
     private final File directory;
+
     protected AbstractFileStorage(File directory) {
         Objects.requireNonNull(directory, "directory must not be null");
         if (!directory.isDirectory()){
@@ -22,37 +26,52 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>{
     }
 
     @Override
-    protected void doSave(Resume resume, File file) {
+    protected void doSave(Resume resume, File searchKey) {
         try {
-            file.createNewFile();
-            doWrite(resume, file);
+            searchKey.createNewFile();
+            doWrite(resume, searchKey);
         } catch (IOException e) {
-            throw new StorageException("IO Exception: ", file.getName(), e);
+            throw new StorageException("IO Exception: ", searchKey.getName(), e);
         }
     }
 
     @Override
-    protected void doUpdate(Resume resume, File file) {
+    protected void doUpdate(Resume resume, File searchKey) {
         try {
-            doWrite(resume, file);
+            doWrite(resume, searchKey);
         } catch (IOException e) {
-            throw new StorageException("IO Exception: ", file.getName(), e);
+            throw new StorageException("IO Exception: ", searchKey.getName(), e);
         }
     }
 
     @Override
-    protected Resume doGet(File file) {
-        return null;
+    protected Resume doGet(File searchKey) {
+        try {
+            return doRead(searchKey);
+        } catch (IOException e) {
+            throw new StorageException("IO Exception: ", searchKey.getName(), e);
+        }
     }
 
     @Override
-    protected void doDelete(File file) {
-
+    protected void doDelete(File searchKey) {
+        searchKey.delete();
     }
 
     @Override
     protected List<Resume> doCopyAll() {
-        return null;
+        List<Resume> result;
+        File[] files = directory.listFiles();
+        assert files != null;
+        result = new ArrayList<>(files.length);
+        try {
+            for (File file : files) {
+                result.add(doRead(file));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
@@ -61,19 +80,26 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>{
     }
 
     @Override
-    protected boolean isExist(File file) {
-        return file.exists();
+    protected boolean isExist(File searchKey) {
+        return searchKey.exists();
     }
 
     @Override
     public void clear() {
-
+        File[] files = directory.listFiles();
+        assert files != null;
+        for (File file : files) {
+            doDelete(file);
+        }
     }
 
     @Override
     public int size() {
-        return 0;
+        File[] files = directory.listFiles();
+        assert files != null;
+        return files.length;
     }
 
-    protected abstract void doWrite(Resume resume, File file) throws IOException;
+    protected abstract void doWrite(Resume resume, File searchKey) throws IOException; // пока нет реализации метода
+    protected  abstract Resume doRead(File searchKey) throws IOException; // пока нет реализации метода
 }
