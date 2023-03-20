@@ -2,6 +2,7 @@ package com.basejava.webapp.storage;
 
 import com.basejava.webapp.model.Resume;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface Storage {
@@ -11,7 +12,7 @@ public interface Storage {
 
     void update(Resume resume);
 
-    Resume get(String uuid);
+    Resume get(String uuid) throws IOException;
 
     void delete(String uuid);
 

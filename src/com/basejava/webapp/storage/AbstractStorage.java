@@ -30,7 +30,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     }
 
     @Override
-    public final Resume get(String uuid) {
+    public final Resume get(String uuid) throws IOException {
         LOG.info("Get " + uuid);
         SK searchKey = getExistingSearchKey(uuid);
         return doGet(searchKey);
