@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void save() {
+    public void save() throws IOException {
         storage.save(RESUME_4);
         assertSize(4);
         assertGet(RESUME_4);
@@ -72,7 +73,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void update() {
+    public void update() throws IOException {
         Resume updatedResume = new Resume(UUID_1, FULL_NAME_4);
         storage.update(updatedResume);
         Assert.assertSame(updatedResume, storage.get(UUID_1));
@@ -85,17 +86,17 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void get() {
+    public void get() throws IOException {
         assertGet(RESUME_2);
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void getNotExist() {
+    public void getNotExist() throws IOException {
         storage.get(UUID_NOT_EXIST);
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void delete() {
+    public void delete() throws IOException {
         storage.delete(UUID_1);
         assertSize(2);
         assertGet(RESUME_1);
@@ -124,7 +125,7 @@ public abstract class AbstractStorageTest {
         Assert.assertEquals(size, storage.size());
     }
 
-    private void assertGet(Resume resume) {
+    private void assertGet(Resume resume) throws IOException {
         Assert.assertEquals(resume, storage.get(resume.getUuid()));
     }
 }

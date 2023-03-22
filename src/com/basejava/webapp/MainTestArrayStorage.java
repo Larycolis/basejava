@@ -4,13 +4,15 @@ import com.basejava.webapp.model.Resume;
 import com.basejava.webapp.storage.SortedArrayStorage;
 import com.basejava.webapp.storage.Storage;
 
+import java.io.IOException;
+
 /**
  * Test for your ArrayStorage implementation
  */
 public class MainTestArrayStorage {
     private final static Storage ARRAY_STORAGE = new SortedArrayStorage(); // new MapUuidStorage(); // new ListStorage(); // new ArrayStorage(); // new MapResumeStorage(); //
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         final Resume r1 = new Resume("uuid1", "Иванов Иван Иванович");
         final Resume r2 = new Resume("uuid2", "Петров Петр Петрович");
         final Resume r3 = new Resume("uuid3", "Сидоров Сидор Сидорович");

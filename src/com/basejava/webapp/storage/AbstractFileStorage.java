@@ -89,7 +89,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         File[] files = directory.listFiles();
         assert files != null;
         for (File file : files) {
-            doDelete(file);
+            file.delete();
         }
     }
 
