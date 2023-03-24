@@ -1,19 +1,20 @@
 package com.basejava.webapp.storage;
 
-import com.basejava.webapp.model.ResumeTestData;
 import com.basejava.webapp.exeption.ExistStorageException;
 import com.basejava.webapp.exeption.NotExistStorageException;
 import com.basejava.webapp.model.Resume;
+import com.basejava.webapp.model.ResumeTestData;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
-
+    protected final static File STORAGE_DIR = new File("C:\\Users\\Евгения\\IdeaProjects\\basejava\\basejava\\storage");
     protected final Storage storage;
     private static final String UUID_NOT_EXIST = "dummy";
 
@@ -76,7 +77,7 @@ public abstract class AbstractStorageTest {
     public void update() throws IOException {
         Resume updatedResume = new Resume(UUID_1, FULL_NAME_4);
         storage.update(updatedResume);
-        Assert.assertSame(updatedResume, storage.get(UUID_1));
+        Assert.assertEquals(updatedResume, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
