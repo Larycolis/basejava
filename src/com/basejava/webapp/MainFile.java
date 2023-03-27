@@ -14,7 +14,7 @@ public class MainFile {
             throw new RuntimeException("Exception: ", e);
         }
 
-        File dir = new File("C:\\Users\\Евгения\\IdeaProjects\\basejava\\basejava\\src\\com\\basejava\\webapp");
+        File dir = new File("C:\\Users\\Евгения\\IdeaProjects\\basejava\\basejava\\src");
         System.out.println(dir.isDirectory());
         String[] list = dir.list();
         if (list != null) {
@@ -29,25 +29,26 @@ public class MainFile {
             throw new RuntimeException("Exception: ", e);
         }
 
-        System.out.println("\nВыполнение рекурсивного обхода и вывода имен файлов\n");
-        doRecursion(dir);
+        System.out.println("\nPerforming recursive traversal and displaying directory and file names\n");
+        doRecursion(dir, "");
     }
 
     //TODO: make pretty output
-    public static void doRecursion(File dir) {
-//        System.out.printf("\nThe search in folder %s completed", project);
-        File[] files = dir.listFiles();
-        if (files == null) {
-            System.out.println("Project does not contain files");
-        } else {
-            for (File file : files) {
-                if (file.isFile()) {
-                    System.out.println("File: " + file.getName());
-                } else if (file.isDirectory()) {
-                    System.out.println("Directory: " + file.getName());
-                    doRecursion(file);
+    public static void doRecursion(File dir, String indent) {
+        if (dir.isDirectory()) {
+            System.out.println(indent + "Directory: " + dir.getName());
+            indent += "\t";
+
+            File[] files = dir.listFiles();
+            if (files == null) {
+                System.out.println("Directory does not contain files");
+            } else {
+                for (File file : files) {
+                    doRecursion(file, indent);
                 }
             }
+        } else {
+            System.out.println(indent + "File: " + dir.getName());
         }
     }
 }

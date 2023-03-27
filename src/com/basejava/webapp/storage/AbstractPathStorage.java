@@ -1,13 +1,8 @@
 package com.basejava.webapp.storage;
 
-import com.basejava.webapp.exeption.StorageException;
-import com.basejava.webapp.model.Resume;
-
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Objects;
 
 //TODO: implement methods
@@ -20,7 +15,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
             throw new IllegalArgumentException(dir + "is not directory or is not readable/writable");
         }
     }
-
+/*
     @Override
     protected void doSave(Resume resume, Path searchKey) {
 
@@ -69,4 +64,5 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     public int size() {
         return 0;
     }
+ */
 }
