@@ -33,7 +33,6 @@ public class MainFile {
         doRecursion(dir, "");
     }
 
-    //TODO: make pretty output
     public static void doRecursion(File dir, String indent) {
         if (dir.isDirectory()) {
             System.out.println(indent + "Directory: " + dir.getName());
