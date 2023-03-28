@@ -58,7 +58,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         try {
             Files.delete(searchKey);
         } catch (IOException e) {
-            throw new StorageException("File delete error ", searchKey.getFileName().toString(), e);
+            throw new StorageException("Path delete error ", searchKey.getFileName().toString(), e);
         }
     }
 
