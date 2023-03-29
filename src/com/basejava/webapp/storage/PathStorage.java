@@ -2,6 +2,7 @@ package com.basejava.webapp.storage;
 
 import com.basejava.webapp.exeption.StorageException;
 import com.basejava.webapp.model.Resume;
+import com.basejava.webapp.storage.serializationStrategy.SerializationStrategy;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -13,15 +14,17 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 // searchKey - Paths.get(dir)
-public abstract class AbstractPathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
+    private final SerializationStrategy serializationStrategy;
 
-    protected AbstractPathStorage(String dir) {
+    protected PathStorage(String dir, SerializationStrategy serializationStrategy) {
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
         if (!Files.isDirectory(directory) || !Files.isReadable(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + "is not directory or is not readable/writable");
         }
+        this.serializationStrategy = serializationStrategy;
     }
 
     @Override
@@ -37,7 +40,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Resume resume, Path searchKey) {
         try {
-            doWrite(resume, new BufferedOutputStream(new FileOutputStream(searchKey.toFile())));
+            serializationStrategy.doWrite(resume, new BufferedOutputStream(new FileOutputStream(searchKey.toFile())));
         } catch (IOException e) {
             throw new StorageException("Path write error ", resume.getUuid(), e);
         }
@@ -46,7 +49,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path searchKey) {
         try {
-            return doRead(new BufferedInputStream(new FileInputStream(searchKey.toFile())));
+            return serializationStrategy.doRead(new BufferedInputStream(new FileInputStream(searchKey.toFile())));
         } catch (IOException e) {
             throw new StorageException("Path read error", searchKey.getFileName().toString(), e);
         }
@@ -100,8 +103,4 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
             throw new StorageException("Path read error ", null, e);
         }
     }
-
-    protected abstract void doWrite(Resume resume, OutputStream os) throws IOException;
-
-    protected abstract Resume doRead(InputStream is) throws IOException;
 }
