@@ -2,9 +2,11 @@ package com.basejava.webapp.storage;
 
 import com.basejava.webapp.exeption.StorageException;
 import com.basejava.webapp.model.Resume;
-import com.basejava.webapp.storage.serializationStrategy.SerializationStrategy;
+import com.basejava.webapp.storage.serializer.StreamSerializerStrategy;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,15 +18,15 @@ import java.util.stream.Stream;
 // searchKey - Paths.get(dir)
 public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
-    private final SerializationStrategy serializationStrategy;
+    private final StreamSerializerStrategy streamSerializerStrategy;
 
-    protected PathStorage(String dir, SerializationStrategy serializationStrategy) {
+    protected PathStorage(String dir, StreamSerializerStrategy streamSerializerStrategy) {
+        Objects.requireNonNull(dir, "directory must not be null");
         directory = Paths.get(dir);
-        Objects.requireNonNull(directory, "directory must not be null");
+        this.streamSerializerStrategy = streamSerializerStrategy;
         if (!Files.isDirectory(directory) || !Files.isReadable(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + "is not directory or is not readable/writable");
         }
-        this.serializationStrategy = serializationStrategy;
     }
 
     @Override
@@ -32,7 +34,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.createFile(searchKey);
         } catch (IOException e) {
-            throw new StorageException("Couldn't create path " + searchKey.toAbsolutePath(), searchKey.getFileName().toString(), e);
+            throw new StorageException("Couldn't create path " + searchKey, getFileName(searchKey), e);
         }
         doUpdate(resume, searchKey);
     }
@@ -40,7 +42,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Resume resume, Path searchKey) {
         try {
-            serializationStrategy.doWrite(resume, new BufferedOutputStream(new FileOutputStream(searchKey.toFile())));
+            streamSerializerStrategy.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(searchKey)));
         } catch (IOException e) {
             throw new StorageException("Path write error ", resume.getUuid(), e);
         }
@@ -49,11 +51,10 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path searchKey) {
         try {
-            return serializationStrategy.doRead(new BufferedInputStream(new FileInputStream(searchKey.toFile())));
+            return streamSerializerStrategy.doRead(new BufferedInputStream(Files.newInputStream(searchKey)));
         } catch (IOException e) {
-            throw new StorageException("Path read error", searchKey.getFileName().toString(), e);
+            throw new StorageException("Path read error", getFileName(searchKey), e);
         }
-
     }
 
     @Override
@@ -61,18 +62,13 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.delete(searchKey);
         } catch (IOException e) {
-            throw new StorageException("Path delete error ", searchKey.getFileName().toString(), e);
+            throw new StorageException("Path delete error ", getFileName(searchKey), e);
         }
     }
 
     @Override
     protected List<Resume> doCopyAll() {
-        try {
-            Stream<Path> result = Files.list(directory);
-            return result.map(this::doGet).collect(Collectors.toList());
-        } catch (IOException e) {
-            throw new StorageException("Path read error", null, e);
-        }
+        return getFilesList().map(this::doGet).collect(Collectors.toList());
     }
 
     @Override
@@ -87,20 +83,25 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     public void clear() {
-        try {
-            Files.list(directory).forEach(this::doDelete);
-        } catch (IOException e) {
-            throw new StorageException("Path delete error ", null, e);
-        }
+        getFilesList().forEach(this::doDelete);
     }
 
     @Override
     public int size() {
+        return (int) getFilesList().count();
+    }
+
+    private String getFileName(Path path) {
+        return path.getFileName().toString();
+    }
+
+    private Stream<Path> getFilesList() {
+        Stream<Path> files;
         try {
-            long size = Files.list(directory).count();
-            return (int) size;
+            files = Files.list(directory);
         } catch (IOException e) {
-            throw new StorageException("Path read error ", null, e);
+            throw new StorageException("Directory read error ", e);
         }
+        return files;
     }
 }
