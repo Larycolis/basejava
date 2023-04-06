@@ -4,7 +4,6 @@ import com.basejava.webapp.exeption.ExistStorageException;
 import com.basejava.webapp.exeption.NotExistStorageException;
 import com.basejava.webapp.model.Resume;
 import com.basejava.webapp.model.ResumeTestData;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,17 +45,10 @@ public abstract class AbstractStorageTest {
 
     @Before
     public void setUp() {
-/*        implemented in the method clearStorage()
         storage.clear();
- */
         storage.save(RESUME_1);
         storage.save(RESUME_2);
         storage.save(RESUME_3);
-    }
-
-    @After
-    public void clearStorage() {
-        storage.clear();
     }
 
     @Test
