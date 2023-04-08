@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -110,7 +111,7 @@ public abstract class AbstractStorageTest {
     // not for MapUuidStorageTest
     @Test
     public void getAllSorted() {
-        List<Resume> expected = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        List<Resume> expected = new ArrayList<>(Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
         List<Resume> actual = storage.getAllSorted();
         Assert.assertEquals(3, actual.size());
         Assert.assertEquals(expected, actual);
