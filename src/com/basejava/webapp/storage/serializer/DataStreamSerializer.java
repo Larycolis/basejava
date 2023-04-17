@@ -65,14 +65,17 @@ public class DataStreamSerializer implements StreamSerializerStrategy {
         }
     }
 
+    @FunctionalInterface
     private interface ElementProcessor {
         void process() throws IOException;
     }
 
+    @FunctionalInterface
     private interface ElementWriter<T> {
         void write(T t) throws IOException;
     }
 
+    @FunctionalInterface
     private interface ElementReader<T> {
         T read() throws IOException;
     }
