@@ -1,5 +1,6 @@
 package com.basejava.webapp;
 
+// Пример race condition
 // В комментариях параллельно выполняющийся второй thread обозначается символом *
 
 public class MainDeadlock implements Runnable {
