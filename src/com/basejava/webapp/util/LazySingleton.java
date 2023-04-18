@@ -6,6 +6,7 @@ public class LazySingleton {
     private LazySingleton() {
     }
 
+    // Static initialization
     private static class LazySingletonHolder{
         private static final LazySingleton INSTANCE = new LazySingleton();
     }
