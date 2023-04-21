@@ -1,12 +1,21 @@
 package com.basejava.webapp;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class MainConcurrency {
     private static final int THREADS_NUM = 10000;
     private static int counter;
-    private static final Object LOCK = new Object();
+    private final AtomicInteger atomicCounter = new AtomicInteger();
+    //    private static final Object LOCK = new Object();
+//    private static final Lock LOCK = new ReentrantLock();
+    private static final ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock();
+    private static final Lock WRITE_LOCK = reentrantReadWriteLock.writeLock();
+    private static final Lock READ_LOCK = reentrantReadWriteLock.readLock();
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
     public static void main(String[] args) throws InterruptedException {
         System.out.println(Thread.currentThread().getName());
@@ -36,18 +45,28 @@ public class MainConcurrency {
         System.out.println(thread0.getState());
 
         final MainConcurrency mainConcurrency = new MainConcurrency();
-        List<Thread> threads = new ArrayList<>(THREADS_NUM);
+        CountDownLatch latch = new CountDownLatch(THREADS_NUM);
+        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+//        CompletionService completionService = new ExecutorCompletionService(executorService);
+//
+//        List<Thread> threads = new ArrayList<>(THREADS_NUM);
 
         for (int i = 0; i < THREADS_NUM; i++) {
-            Thread thread = new Thread(() -> {
+            Future<Integer> future = executorService.submit(() ->
+//                Thread thread = new Thread(() ->
+            {
                 for (int j = 0; j < 100; j++) {
                     mainConcurrency.inc();
+//                    System.out.println(DATE_FORMAT);
                 }
+                latch.countDown();
+                return 5;
             });
-            thread.start();
-            threads.add(thread);
+//            thread.start();
+//            threads.add(thread);
         }
 
+/*
         threads.forEach(t -> {
             try {
                 t.join();
@@ -55,13 +74,18 @@ public class MainConcurrency {
                 e.printStackTrace();
             }
         });
-        System.out.println(mainConcurrency.counter);
+ */
+
+        latch.await(10, TimeUnit.SECONDS);
+        executorService.shutdownNow();
+//        System.out.println(mainConcurrency.counter);
+        System.out.println(mainConcurrency.atomicCounter.get());
 
         // Deadlock из разбора HW11
-        final String lock1 = "lock1";
-        final String lock2 = "lock2";
-        deadLock(lock1, lock2);
-        deadLock(lock2, lock1);
+//        final String lock1 = "lock1";
+//        final String lock2 = "lock2";
+//        deadLock(lock1, lock2);
+//        deadLock(lock2, lock1);
     }
 
     private static void deadLock(Object lock1, Object lock2) {
@@ -82,10 +106,19 @@ public class MainConcurrency {
         }).start();
     }
 
-    private synchronized void inc() {
+    private void inc() {
 //        synchronized (this) {
 //        synchronized (MainConcurrency.class) {
-            counter++;
+//        WRITE_LOCK.lock();
+//        try {
+        atomicCounter.incrementAndGet();
+//            counter++;
+//        } finally {
+//            WRITE_LOCK.unlock();
+//        }
+//                wait();
+//                readFile
+//                ...
 //        }
     }
 }
