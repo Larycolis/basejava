@@ -23,7 +23,6 @@ public class MainStream {
             System.out.print(num + " ");
         }
         System.out.println("");
-
         List<Integer> result = oddOrEven(integers);
         for (Integer num : result) {
             System.out.print(num + " ");
@@ -33,8 +32,8 @@ public class MainStream {
 
         IntStream.range(0, SIZE)
                 .forEach(index -> values[index] = random.nextInt(UPPER_BOUND));
-        for (int i = 0; i < values.length; i++) {
-            System.out.print(values[i] + " ");
+        for (int value : values) {
+            System.out.print(value + " ");
         }
         System.out.println("\n" + minValue(values));
     }
