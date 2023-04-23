@@ -40,33 +40,25 @@ public class MainStream {
 
     // TODO: oddOrEven(List<Integer> integers)
     private static List<Integer> oddOrEven(List<Integer> integers) {
-        int sum = integers.stream()
-                .mapToInt(i -> i)
-                .sum();
-//        System.out.println(sum);
-        if (sum % 2 != 0) {
-            return integers.stream()
-                    .filter(x -> x % 2 == 0)
-                    .collect(Collectors.toList());
-        } else {
-            return integers.stream()
-                    .filter(x -> x % 2 != 0)
-                    .collect(Collectors.toList());
-        }
+        long countOdd = integers.stream()
+                .filter(x -> x % 2 != 0)
+                .count();
+
+        System.out.println(countOdd);
+
+        return integers.stream()
+                .filter(x -> (countOdd % 2 != 0) && x % 2 == 0 || (countOdd % 2 == 0) && x % 2 != 0)
+                .collect(Collectors.toList());
     }
 
     // TODO: minValue(int[] values)
     private static int minValue(int[] values) {
-        int minValue = 0;
         int[] result = Arrays.stream(values)
                 .filter(x -> (x > 0))
                 .distinct()
                 .sorted()
                 .toArray();
 
-        for (Integer num : result) {
-            minValue = 10 * minValue + num;
-        }
-        return minValue;
+        return Arrays.stream(result).reduce(0, (a, b) -> 10 * a + b);
     }
 }
