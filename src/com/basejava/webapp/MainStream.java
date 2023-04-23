@@ -43,9 +43,7 @@ public class MainStream {
         long countOdd = integers.stream()
                 .filter(x -> x % 2 != 0)
                 .count();
-
-        System.out.println(countOdd);
-
+//        System.out.println(countOdd);
         return integers.stream()
                 .filter(x -> (countOdd % 2 != 0) && x % 2 == 0 || (countOdd % 2 == 0) && x % 2 != 0)
                 .collect(Collectors.toList());
