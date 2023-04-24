@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class MainStream {
-    // Сhecking methods
+    // Checking methods
     public static final int SIZE = 10;
     public static final int UPPER_BOUND = 10;
 
@@ -22,7 +22,7 @@ public class MainStream {
         for (Integer num : integers) {
             System.out.print(num + " ");
         }
-        System.out.println("");
+        System.out.println();
         List<Integer> result = oddOrEven(integers);
         for (Integer num : result) {
             System.out.print(num + " ");
@@ -43,20 +43,20 @@ public class MainStream {
         long countOdd = integers.stream()
                 .filter(x -> x % 2 != 0)
                 .count();
+        boolean isOdd = countOdd % 2 != 0;
 //        System.out.println(countOdd);
+//        System.out.println(isOdd);
         return integers.stream()
-                .filter(x -> (countOdd % 2 != 0) && x % 2 == 0 || (countOdd % 2 == 0) && x % 2 != 0)
-                .collect(Collectors.toList());
+                .collect(Collectors.partitioningBy(x -> x % 2 == 0)).get(isOdd);
+//        Сначала проверяется .get(isOdd) ? если true, то в части Collectors.partitioningBy(x -> x % 2 == 0) собираются все четные значения : если false, то все нечетные значения
     }
 
     // TODO: minValue(int[] values)
     private static int minValue(int[] values) {
-        int[] result = Arrays.stream(values)
+        return Arrays.stream(values)
                 .filter(x -> (x > 0))
                 .distinct()
                 .sorted()
-                .toArray();
-
-        return Arrays.stream(result).reduce(0, (a, b) -> 10 * a + b);
+                .reduce(0, (a, b) -> 10 * a + b);
     }
 }
