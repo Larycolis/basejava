@@ -1,9 +1,6 @@
 package com.basejava.webapp;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -40,15 +37,17 @@ public class MainStream {
 
     // TODO: oddOrEven(List<Integer> integers)
     private static List<Integer> oddOrEven(List<Integer> integers) {
-        long countOdd = integers.stream()
-                .filter(x -> x % 2 != 0)
-                .count();
-        boolean isOdd = countOdd % 2 != 0;
-//        System.out.println(countOdd);
-//        System.out.println(isOdd);
-        return integers.stream()
-                .collect(Collectors.partitioningBy(x -> x % 2 == 0)).get(isOdd);
-//        Сначала проверяется .get(isOdd) ? если true, то в части Collectors.partitioningBy(x -> x % 2 == 0) собираются все четные значения : если false, то все нечетные значения
+        final Map<Boolean, List<Integer>> map = integers.stream()
+                .collect(Collectors.partitioningBy(x -> x % 2 != 0));
+
+        return map.get(true).size() % 2 != 0 ? map.get(false) : map.get(true);
+        /*
+         порядок выполнения:
+         1. partitioningBy(x -> x % 2 != 0) - разделение на две мапы с ключами isOdd = true, !isOdd = false;
+         2. map.get(true) - получение списка нечетных элементов, size() - получение количества элементов списка нечетных чисел,
+         тернарный оператор: % 2 != 0 ? map.get(false) : map.get(true) - если количество элементов в списке нечетных чисел нечетное,
+         то вернуть список четных чисел, иначе вернуть список нечетных чисел.
+         */
     }
 
     // TODO: minValue(int[] values)
