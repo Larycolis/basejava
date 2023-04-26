@@ -1,17 +1,15 @@
-create table public.resume
+CREATE TABLE resume
 (
-    uuid      char(36) primary key not null,
-    full_name text                 not null
+    uuid      CHAR(36) PRIMARY KEY NOT NULL,
+    full_name TEXT                 NOT NULL
 );
 
-create table public.contact
+CREATE TABLE contact
 (
-    id          serial primary key,
-    resume_uuid char(36) not null references resume (uuid)
-        on update restrict on delete cascade,
-    type        text     not null,
-    value       text     not null
+    id          SERIAL PRIMARY KEY,
+    resume_uuid CHAR(36) NOT NULL REFERENCES resume (uuid) ON UPDATE RESTRICT ON DELETE CASCADE,
+    type        TEXT     NOT NULL,
+    value       TEXT     NOT NULL
 );
-
-create unique index contact_uuid_type_index
-    on contact (resume_uuid, type);
+CREATE UNIQUE INDEX contact_uuid_type_index
+    ON contact (resume_uuid, type);
