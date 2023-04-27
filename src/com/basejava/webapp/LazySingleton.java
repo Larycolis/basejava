@@ -1,4 +1,4 @@
-package com.basejava.webapp.util;
+package com.basejava.webapp;
 
 public class LazySingleton {
     private static volatile LazySingleton INSTANCE;
