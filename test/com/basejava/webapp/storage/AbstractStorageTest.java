@@ -1,5 +1,6 @@
 package com.basejava.webapp.storage;
 
+import com.basejava.webapp.Config;
 import com.basejava.webapp.exeption.ExistStorageException;
 import com.basejava.webapp.exeption.NotExistStorageException;
 import com.basejava.webapp.model.Resume;
@@ -8,13 +9,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
-    protected final static String ABSOLUTE_PATH = "C:\\Users\\Евгения\\IdeaProjects\\basejava\\basejava\\storage";
+    protected final static File STORAGE_DIR = Config.getConfig().getStorageDir();
     protected final Storage storage;
 
     private static final String UUID_NOT_EXIST = "dummy";
@@ -51,6 +53,11 @@ public abstract class AbstractStorageTest {
         storage.save(RESUME_2);
         storage.save(RESUME_3);
     }
+
+//    @After
+//    public void afterAll() {
+//        storage.clear();
+//    }
 
     @Test
     public void clear() {

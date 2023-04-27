@@ -7,6 +7,6 @@ import java.io.File;
 public class FileStorageTest extends AbstractStorageTest {
 
     public FileStorageTest() {
-        super(new FileStorage(new File(ABSOLUTE_PATH), new ObjectStreamSerializerStrategy()));
+        super(new FileStorage(new File(STORAGE_DIR.getAbsolutePath()), new ObjectStreamSerializerStrategy()));
     }
 }
