@@ -10,12 +10,21 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+DriverManager - сервис для управления JDBC-драйверами, достает коннект из базы по креденшелам
+Connection - создается сеанс соединения с базой данных
+PreparedStatement отдает команду SQL
+ResultSet - после отправки команды SQL возвращает результат выполнения
+if (!rs.next()) - если в результате отправки команды результат нет, то, например выбросить exception
+ */
+
 public class SQLStorage implements Storage {
     public final ConnectionFactory connectionFactory;
-    // public final SqlHelper sqlHelper;
+//    public final SqlHelper sqlHelper;
 
     public SQLStorage(String dbUrl, String dbUser, String dbPassword) {
         connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+//        sqlHelper = new SqlHelper(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
     }
 
     @Override
@@ -37,7 +46,12 @@ public class SQLStorage implements Storage {
             try {
                 ps.execute();
             } catch (SQLException e) {
-                throw new ExistStorageException(resume.getUuid());
+                String state = e.getSQLState();
+                if (state.equals("23505")) {
+                    throw new ExistStorageException(null);
+                } else {
+                    throw new StorageException(e);
+                }
             }
         } catch (SQLException e) {
             throw new StorageException(e);
@@ -50,8 +64,7 @@ public class SQLStorage implements Storage {
              PreparedStatement ps = conn.prepareStatement("UPDATE resume SET full_name=? WHERE uuid=?")) {
             ps.setString(1, resume.getFullName());
             ps.setString(2, resume.getUuid());
-            int rs = ps.executeUpdate();
-            if (rs == 0) {
+            if (ps.executeUpdate() == 0) {
                 throw new NotExistStorageException(resume.getUuid());
             }
         } catch (SQLException e) {
@@ -64,7 +77,6 @@ public class SQLStorage implements Storage {
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r WHERE r.uuid=?")) {
             ps.setString(1, uuid);
-            ps.execute();
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
                 throw new NotExistStorageException(uuid);
@@ -80,8 +92,7 @@ public class SQLStorage implements Storage {
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("DELETE FROM resume r WHERE r.uuid=?")) {
             ps.setString(1, uuid);
-            boolean rs = ps.execute();
-            if (!rs) {
+            if (!ps.execute()) {
                 throw new NotExistStorageException(uuid);
             }
         } catch (SQLException e) {
@@ -91,25 +102,25 @@ public class SQLStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        List<Resume> results = new ArrayList<>();
         try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume ORDER BY uuid")) {
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r ORDER BY r.full_name")) {
             ResultSet rs = ps.executeQuery();
+            List<Resume> results = new ArrayList<>();
             while (rs.next()) {
-                Resume resume = new Resume(rs.getString("uuid").trim(), rs.getString("full_name").trim());
+                Resume resume = new Resume(rs.getString("uuid"), rs.getString("full_name"));
                 results.add(resume);
             }
+            return results;
         } catch (SQLException e) {
             throw new StorageException(e);
         }
-        return results;
     }
 
     @Override
     public int size() {
         int count = 0;
         try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) FROM resume")) {
+             PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) FROM resume r")) {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 count = rs.getInt(1);

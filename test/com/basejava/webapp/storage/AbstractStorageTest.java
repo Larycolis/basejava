@@ -13,16 +13,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class AbstractStorageTest {
     protected final static File STORAGE_DIR = Config.getConfig().getStorageDir();
     protected final Storage storage;
 
     private static final String UUID_NOT_EXIST = "dummy";
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
-    private static final String UUID_4 = "uuid4";
+    private static final String UUID_1 = String.valueOf(UUID.randomUUID());
+    private static final String UUID_2 = String.valueOf(UUID.randomUUID());
+    private static final String UUID_3 = String.valueOf(UUID.randomUUID());
+    private static final String UUID_4 = String.valueOf(UUID.randomUUID());
 
     private static final String FULL_NAME_1 = "Иванов Иван Иванович";
     private static final String FULL_NAME_2 = "Петров Петр Петрович";
