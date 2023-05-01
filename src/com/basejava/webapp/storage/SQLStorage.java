@@ -12,6 +12,7 @@ import java.util.List;
 
 public class SQLStorage implements Storage {
     public final ConnectionFactory connectionFactory;
+    // public final SqlHelper sqlHelper;
 
     public SQLStorage(String dbUrl, String dbUser, String dbPassword) {
         connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
