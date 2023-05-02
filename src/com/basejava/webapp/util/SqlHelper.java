@@ -14,12 +14,17 @@ public class SqlHelper {
         this.connectionFactory = connectionFactory;
     }
 
-    public <T> T runCode(String setString) {
+    public <T> T execute(String sqlQuery, SqlQueryExecutor<T> sqlQueryExecutor) {
         try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(setString)) {
-            return null; // тут должен выполняться команда SQL в зависимости от операции CRUD
+             PreparedStatement ps = conn.prepareStatement(sqlQuery)) {
+            return sqlQueryExecutor.execute(ps);
         } catch (SQLException e) {
             throw new StorageException(e);
         }
+    }
+
+    @FunctionalInterface
+    public interface SqlQueryExecutor<T> {
+        T execute(PreparedStatement ps) throws SQLException;
     }
 }
