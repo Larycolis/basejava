@@ -1,8 +1,7 @@
-package com.basejava.webapp.util;
+package com.basejava.webapp.sql;
 
 import com.basejava.webapp.exeption.ExistStorageException;
 import com.basejava.webapp.exeption.StorageException;
-import com.basejava.webapp.sql.ConnectionFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,6 +17,10 @@ public class SqlHelper {
 
     public SqlHelper(ConnectionFactory connectionFactory) {
         this.connectionFactory = connectionFactory;
+    }
+
+    public void execute(String sqlQuery) {
+        execute(sqlQuery, PreparedStatement::execute);
     }
 
     public <T> T execute(String sqlQuery, SqlQueryExecutor<T> sqlQueryExecutor) {
