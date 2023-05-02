@@ -7,6 +7,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/*
+Connection - создается сеанс соединения с базой данных
+PreparedStatement отдает команду SQL
+*/
+
 public class SqlHelper {
     private final ConnectionFactory connectionFactory;
 
