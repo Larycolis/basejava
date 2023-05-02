@@ -1,14 +1,11 @@
 package com.basejava.webapp.storage;
 
-import com.basejava.webapp.exeption.ExistStorageException;
 import com.basejava.webapp.exeption.NotExistStorageException;
-import com.basejava.webapp.exeption.StorageException;
 import com.basejava.webapp.model.Resume;
 import com.basejava.webapp.util.SqlHelper;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,16 +35,7 @@ public class SQLStorage implements Storage {
         sqlHelper.execute("INSERT INTO resume (uuid, full_name) VALUES (?,?)", ps -> {
             ps.setString(1, resume.getUuid());
             ps.setString(2, resume.getFullName());
-            try {
-                ps.execute();
-            } catch (SQLException e) {
-                String state = e.getSQLState();
-                if (state.equals("23505")) {
-                    throw new ExistStorageException(null);
-                } else {
-                    throw new StorageException(e);
-                }
-            }
+            ps.execute();
             return null;
         });
     }
@@ -105,10 +93,7 @@ public class SQLStorage implements Storage {
         return sqlHelper.execute("SELECT COUNT(*) FROM resume r", ps -> {
             int count = 0;
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                count = rs.getInt(1);
-            }
-            return count;
+            return rs.next() ? rs.getInt(1) : count;
         });
     }
 }
