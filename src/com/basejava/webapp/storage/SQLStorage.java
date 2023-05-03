@@ -6,6 +6,7 @@ import com.basejava.webapp.model.Resume;
 import com.basejava.webapp.sql.SqlHelper;
 
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,20 +33,23 @@ public class SQLStorage implements Storage {
     // Когда в типизированном методе ничего не нужно возвращать нужно пометить это конструкцией <Void>
     @Override
     public void save(Resume resume) {
-        sqlHelper.<Void>execute("INSERT INTO resume (uuid, full_name) VALUES (?,?)", ps -> {
-            ps.setString(1, resume.getUuid());
-            ps.setString(2, resume.getFullName());
-            ps.execute();
+        sqlHelper.transactionExecute(conn -> {
+            try (PreparedStatement ps = conn.prepareStatement("INSERT INTO resume (uuid, full_name) VALUES (?,?)")) {
+                ps.setString(1, resume.getUuid());
+                ps.setString(2, resume.getFullName());
+                ps.execute();
+            }
+            try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)")) {
+                for (Map.Entry<ContactType, String> e : resume.getContacts().entrySet()) {
+                    ps.setString(1, resume.getUuid());
+                    ps.setString(2, e.getKey().name());
+                    ps.setString(3, e.getValue());
+                    ps.addBatch();
+                }
+                ps.executeBatch();
+            }
             return null;
         });
-        for (Map.Entry<ContactType, String> e : resume.getContacts().entrySet()) {
-            sqlHelper.<Void>execute("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)", ps -> {
-                ps.setString(1, resume.getUuid());
-                ps.setString(2, e.getKey().name());
-                ps.setString(3, e.getValue());
-                return null;
-            });
-        }
     }
 
     @Override
@@ -63,10 +67,10 @@ public class SQLStorage implements Storage {
     @Override
     public Resume get(String uuid) {
         return sqlHelper.execute("" +
-                        "SELECT * FROM resume r\n" +
-                        "LEFT JOIN contact c\n" +
-                        "ON r.uuid = c.resume_uuid\n" +
-                        "WHERE r.uuid=?\n",
+                        "SELECT * FROM resume r " +
+                        "LEFT JOIN contact c " +
+                        "ON r.uuid = c.resume_uuid " +
+                        "WHERE r.uuid=?",
                 ps -> {
                     ps.setString(1, uuid);
                     ResultSet rs = ps.executeQuery();
@@ -78,7 +82,7 @@ public class SQLStorage implements Storage {
                         String value = rs.getString("value");
                         ContactType type = ContactType.valueOf(rs.getString("type"));
                         resume.addContact(type, value);
-                    } while (!rs.next());
+                    } while (rs.next());
                     return resume;
                 });
     }
