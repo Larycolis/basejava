@@ -8,14 +8,13 @@ import com.basejava.webapp.sql.SqlHelper;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /*
 DriverManager - сервис для управления JDBC-драйверами, достает коннект из базы по креденшелам
 ResultSet - после отправки команды SQL возвращает результат выполнения
 if (!rs.next()) - если в результате отправки команды результат нет, то, например выбросить exception
+Когда в типизированном методе ничего не нужно возвращать нужно пометить это конструкцией, например, sqlHelper.<Void>.execute()
  */
 
 public class SQLStorage implements Storage {
@@ -30,7 +29,6 @@ public class SQLStorage implements Storage {
         sqlHelper.execute("DELETE FROM resume");
     }
 
-    // Когда в типизированном методе ничего не нужно возвращать нужно пометить это конструкцией <Void>
     @Override
     public void save(Resume resume) {
         sqlHelper.transactionExecute(conn -> {
@@ -54,11 +52,22 @@ public class SQLStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        sqlHelper.<Void>execute("UPDATE resume SET full_name=? WHERE uuid=?", ps -> {
-            ps.setString(1, resume.getFullName());
-            ps.setString(2, resume.getUuid());
-            if (ps.executeUpdate() == 0) {
-                throw new NotExistStorageException(resume.getUuid());
+        sqlHelper.transactionExecute(conn -> {
+            try (PreparedStatement ps = conn.prepareStatement("UPDATE resume SET full_name=? WHERE uuid=?")) {
+                ps.setString(1, resume.getFullName());
+                ps.setString(2, resume.getUuid());
+                if (ps.executeUpdate() == 0) {
+                    throw new NotExistStorageException(resume.getUuid());
+                }
+            }
+            try (PreparedStatement ps = conn.prepareStatement("UPDATE contact SET type=?, value=? WHERE resume_uuid=?")) {
+                for (Map.Entry<ContactType, String> e : resume.getContacts().entrySet()) {
+                    ps.setString(1, e.getKey().name());
+                    ps.setString(2, e.getValue());
+                    ps.setString(3, resume.getUuid());
+                    ps.addBatch();
+                }
+                ps.executeBatch();
             }
             return null;
         });
@@ -79,9 +88,7 @@ public class SQLStorage implements Storage {
                     }
                     Resume resume = new Resume(uuid, rs.getString("full_name"));
                     do {
-                        String value = rs.getString("value");
-                        ContactType type = ContactType.valueOf(rs.getString("type"));
-                        resume.addContact(type, value);
+                        resume.addContact(ContactType.valueOf(rs.getString("type")), rs.getString("value"));
                     } while (rs.next());
                     return resume;
                 });
@@ -100,14 +107,27 @@ public class SQLStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        return sqlHelper.execute("SELECT * FROM resume r ORDER BY r.full_name, r.uuid", ps -> {
-            ResultSet rs = ps.executeQuery();
-            List<Resume> results = new ArrayList<>();
-            while (rs.next()) {
-                results.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
-            }
-            return results;
-        });
+        return sqlHelper.execute("" +
+                        "SELECT * FROM resume r " +
+                        "LEFT JOIN contact c " +
+                        "ON r.uuid = c.resume_uuid " +
+                        "ORDER BY r.full_name, r.uuid",
+                ps -> {
+                    ResultSet rs = ps.executeQuery();
+                    List<Resume> results = new ArrayList<>();
+                    String tempUuid = null;
+                    Resume resume = null;
+                    while (rs.next()) {
+                        String uuid = rs.getString("uuid");
+                        if (!uuid.equals(tempUuid)) {
+                            resume = new Resume(uuid, rs.getString("full_name"));
+                            results.add(resume);
+                            tempUuid = uuid;
+                        }
+                        resume.addContact(ContactType.valueOf(rs.getString("type")), rs.getString("value"));
+                    }
+                    return results;
+                });
     }
 
     @Override
