@@ -6,7 +6,7 @@ import java.util.Map;
 
 import static com.basejava.webapp.model.SectionType.*;
 
-public class ResumeTestData {
+public class ResumeTestDataKislin {
     private static final String PH_NUM = "+7(921) 855-0482";
     private static final String ACCOUNT = "skype:grigory.kislin";
     private static final String E_MAIL = "gkislin@yandex.ru";
@@ -15,7 +15,7 @@ public class ResumeTestData {
     private static final String LINK_3 = "https://stackoverflow.com/users/548473/grigory-kislin";
     private static final String LINK_4 = "https://gkislin.ru/";
 
-    private static final String PERS_CONT = "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям ";
+    private static final String PERS_CONT = "Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям";
     private static final String OBJ_CONT = "Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры";
 
     private static final String ACH_1 = "Организация команды и успешная реализация Java проектов для сторонних заказчиков: приложения автопарк на стеке Spring Cloud/микросервисы, система мониторинга показателей спортсменов на Spring Boot, участие в проекте МЭШ на Play-2, многомодульный Spring Boot + Vaadin проект для комплексных DIY смет";
