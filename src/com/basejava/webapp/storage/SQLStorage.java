@@ -41,7 +41,7 @@ public class SQLStorage implements Storage {
                 ps.setString(2, resume.getFullName());
                 ps.execute();
             }
-            doInsert(conn, resume);
+            doInsertContacts(conn, resume);
             return null;
         });
     }
@@ -66,7 +66,7 @@ public class SQLStorage implements Storage {
                 });
             }
 
-            doInsert(conn, resume);
+            doInsertContacts(conn, resume);
             return null;
         });
     }
@@ -144,7 +144,7 @@ public class SQLStorage implements Storage {
         });
     }
 
-    private void doInsert(Connection conn, Resume resume) {
+    private void doInsertContacts(Connection conn, Resume resume) {
         try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES(?,?,?)")) {
             for (Map.Entry<ContactType, String> e : resume.getContacts().entrySet()) {
                 ps.setString(1, resume.getUuid());
