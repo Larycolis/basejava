@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.logging.Logger;
 
 /*
 DriverManager - сервис для управления JDBC-драйверами, достает коннект из базы по креденшелам
@@ -18,6 +19,7 @@ if (!rs.next()) - если в результате отправки команд
  */
 
 public class SQLStorage implements Storage {
+    private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
     public final SqlHelper sqlHelper;
 
     public SQLStorage(String dbUrl, String dbUser, String dbPassword) {
@@ -26,11 +28,13 @@ public class SQLStorage implements Storage {
 
     @Override
     public void clear() {
+        LOG.info("Clear");
         sqlHelper.execute("DELETE FROM resume");
     }
 
     @Override
     public void save(Resume resume) {
+        LOG.info("Save " + resume);
         sqlHelper.transactionExecute(conn -> {
             try (PreparedStatement ps = conn.prepareStatement("INSERT INTO resume (uuid, full_name) VALUES (?,?)")) {
                 ps.setString(1, resume.getUuid());
@@ -52,6 +56,7 @@ public class SQLStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
+        LOG.info("Update " + resume);
         sqlHelper.transactionExecute(conn -> {
             try (PreparedStatement ps = conn.prepareStatement("UPDATE resume SET full_name=? WHERE uuid=?")) {
                 ps.setString(1, resume.getFullName());
@@ -75,6 +80,7 @@ public class SQLStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
+        LOG.info("Get " + uuid);
         return sqlHelper.execute("" +
                         "SELECT * FROM resume r " +
                         "LEFT JOIN contact c " +
@@ -96,6 +102,7 @@ public class SQLStorage implements Storage {
 
     @Override
     public void delete(String uuid) {
+        LOG.info("Delete " + uuid);
         sqlHelper.execute("DELETE FROM resume r WHERE r.uuid=?", ps -> {
             ps.setString(1, uuid);
             if (ps.executeUpdate() == 0) {
@@ -107,6 +114,7 @@ public class SQLStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
+        LOG.info("getAllSorted");
         return sqlHelper.execute("" +
                         "SELECT * FROM resume r " +
                         "LEFT JOIN contact c " +
@@ -132,6 +140,7 @@ public class SQLStorage implements Storage {
 
     @Override
     public int size() {
+        LOG.info("Size");
         return sqlHelper.execute("SELECT count(*) FROM resume r", ps -> {
             ResultSet rs = ps.executeQuery();
             return rs.next() ? rs.getInt(1) : 0;
