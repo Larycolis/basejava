@@ -41,17 +41,26 @@ public class ResumeTestDataBogdanova {
 
     public static Resume createResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
+        addContact(resume);
+        addSection(resume);
+
+        return resume;
+    }
+
+    private static void addContact(Resume resume){
         resume.addContact(ContactType.CELLPHONE, PH_NUM);
         resume.addContact(ContactType.SKYPE, ACCOUNT);
         resume.addContact(ContactType.EMAIL, E_MAIL);
         resume.addContact(ContactType.LINKEDIN, LINK_1);
         resume.addContact(ContactType.GITHUB, LINK_2);
+    }
+
+    private static void addSection(Resume resume){
         resume.addSection(PERSONAL, new TextSection(PERS_CONT));
         resume.addSection(OBJECTIVE, new TextSection(OBJ_CONT));
         resume.addSection(ACHIEVEMENT, new ListSection(ACH_1));
         resume.addSection(QUALIFICATIONS, new ListSection(QUAL_1, QUAL_2, QUAL_3, QUAL_4, QUAL_5, QUAL_6, QUAL_7, QUAL_8, QUAL_9, QUAL_10));
         resume.addSection(EXPERIENCE, new OrganizationSection(EXP_8, EXP_7, EXP_6, EXP_5));
         resume.addSection(EDUCATION, new OrganizationSection(EDU_6, EDU_5, EDU_4, EDU_3, EDU_2, EDU_1));
-        return resume;
     }
 }

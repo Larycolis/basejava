@@ -1,7 +1,6 @@
 package com.basejava.webapp.model;
 
 import java.time.Month;
-import java.util.EnumMap;
 import java.util.Map;
 
 import static com.basejava.webapp.model.SectionType.*;
@@ -59,19 +58,9 @@ public class ResumeTestDataKislin {
 
     public static Resume createResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
-        resume.addContact(ContactType.CELLPHONE, PH_NUM);
-        resume.addContact(ContactType.SKYPE, ACCOUNT);
-        resume.addContact(ContactType.EMAIL, E_MAIL);
-        resume.addContact(ContactType.LINKEDIN, LINK_1);
-        resume.addContact(ContactType.GITHUB, LINK_2);
-        resume.addContact(ContactType.STACKOVERFLOW, LINK_3);
-        resume.addContact(ContactType.HOME_PAGE, LINK_4);
-        resume.addSection(PERSONAL, new TextSection(PERS_CONT));
-        resume.addSection(OBJECTIVE, new TextSection(OBJ_CONT));
-        resume.addSection(ACHIEVEMENT, new ListSection(ACH_1, ACH_2, ACH_3, ACH_4, ACH_5, ACH_6, ACH_7));
-        resume.addSection(QUALIFICATIONS, new ListSection(QUAL_1, QUAL_2, QUAL_3, QUAL_4, QUAL_5, QUAL_6, QUAL_7, QUAL_8, QUAL_9, QUAL_10, QUAL_11, QUAL_12, QUAL_13, QUAL_14));
-        resume.addSection(EXPERIENCE, new OrganizationSection(EXP_8, EXP_7, EXP_6, EXP_5, EXP_4, EXP_3, EXP_2, EXP_1));
-        resume.addSection(EDUCATION, new OrganizationSection(EDU_6, EDU_5, EDU_4, EDU_3, EDU_2, EDU_1));
+        addContact(resume);
+        addSection(resume);
+
         return resume;
     }
 
@@ -81,39 +70,43 @@ public class ResumeTestDataKislin {
         String uuid = "uuid1";
         String fullName = "Григорий Кислин";
 
-        Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
-        contacts.put(ContactType.CELLPHONE, PH_NUM);
-        contacts.put(ContactType.SKYPE, ACCOUNT);
-        contacts.put(ContactType.EMAIL, E_MAIL);
-        contacts.put(ContactType.LINKEDIN, LINK_1);
-        contacts.put(ContactType.GITHUB, LINK_2);
-        contacts.put(ContactType.STACKOVERFLOW, LINK_3);
-        contacts.put(ContactType.HOME_PAGE, LINK_4);
-
-        Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
-        sections.put(PERSONAL, new TextSection(PERS_CONT));
-        sections.put(OBJECTIVE, new TextSection(OBJ_CONT));
-        sections.put(ACHIEVEMENT, new ListSection(ACH_1, ACH_2, ACH_3, ACH_4, ACH_5, ACH_6, ACH_7));
-        sections.put(QUALIFICATIONS, new ListSection(QUAL_1, QUAL_2, QUAL_3, QUAL_4, QUAL_5, QUAL_6, QUAL_7, QUAL_8, QUAL_9, QUAL_10, QUAL_11, QUAL_12, QUAL_13, QUAL_14));
-        sections.put(EXPERIENCE, new OrganizationSection(EXP_8, EXP_7, EXP_6, EXP_5, EXP_4, EXP_3, EXP_2, EXP_1));
-        sections.put(EDUCATION, new OrganizationSection(EDU_6, EDU_5, EDU_4, EDU_3, EDU_2, EDU_1));
-
-        Resume resume = new Resume(uuid, fullName, contacts, sections);
+        Resume resume = new Resume(uuid, fullName);
+        addContact(resume);
+        addSection(resume);
 
         // Проверка вывода заполненного резюме
         System.out.println("Идентификационный номер резюме: " + resume.getUuid());
         System.out.println("Полное имя: " + resume.getFullName() + "\n");
 
-        for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+        for (Map.Entry<ContactType, String> entry : resume.getContacts().entrySet()) {
             System.out.println(entry.getKey().getType() + entry.getValue());
         }
 
         System.out.println(" ");
 
-        for (Map.Entry<SectionType, AbstractSection> entry : sections.entrySet()) {
+        for (Map.Entry<SectionType, AbstractSection> entry : resume.getSections().entrySet()) {
             System.out.println(entry.getKey().getTitle() + "\n" + entry.getValue());
         }
 
         System.out.printf("Creating a resume and filling in the values took %d milliseconds", System.currentTimeMillis() - start);
+    }
+
+    private static void addContact(Resume resume) {
+        resume.addContact(ContactType.CELLPHONE, PH_NUM);
+        resume.addContact(ContactType.SKYPE, ACCOUNT);
+        resume.addContact(ContactType.EMAIL, E_MAIL);
+        resume.addContact(ContactType.LINKEDIN, LINK_1);
+        resume.addContact(ContactType.GITHUB, LINK_2);
+        resume.addContact(ContactType.STACKOVERFLOW, LINK_3);
+        resume.addContact(ContactType.HOME_PAGE, LINK_4);
+    }
+
+    private static void addSection(Resume resume) {
+        resume.addSection(PERSONAL, new TextSection(PERS_CONT));
+        resume.addSection(OBJECTIVE, new TextSection(OBJ_CONT));
+        resume.addSection(ACHIEVEMENT, new ListSection(ACH_1, ACH_2, ACH_3, ACH_4, ACH_5, ACH_6, ACH_7));
+        resume.addSection(QUALIFICATIONS, new ListSection(QUAL_1, QUAL_2, QUAL_3, QUAL_4, QUAL_5, QUAL_6, QUAL_7, QUAL_8, QUAL_9, QUAL_10, QUAL_11, QUAL_12, QUAL_13, QUAL_14));
+        resume.addSection(EXPERIENCE, new OrganizationSection(EXP_8, EXP_7, EXP_6, EXP_5, EXP_4, EXP_3, EXP_2, EXP_1));
+        resume.addSection(EDUCATION, new OrganizationSection(EDU_6, EDU_5, EDU_4, EDU_3, EDU_2, EDU_1));
     }
 }

@@ -36,17 +36,6 @@ public class Resume implements Comparable<Resume>, Serializable {
         this.fullName = fullName;
     }
 
-    public Resume(String uuid, String fullName, Map<ContactType, String> contacts, Map<SectionType, AbstractSection> sections) {
-        Objects.requireNonNull(uuid, "uuid must not be null");
-        Objects.requireNonNull(fullName, "fullName must not be null");
-        Objects.requireNonNull(contacts, "contacts must not be null");
-        Objects.requireNonNull(sections, "sections must not be null");
-        this.uuid = uuid;
-        this.fullName = fullName;
-        this.contacts = contacts;
-        this.sections = sections;
-    }
-
     public String getUuid() {
         return uuid;
     }
@@ -84,7 +73,7 @@ public class Resume implements Comparable<Resume>, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        if(Objects.equals(this.getUuid(), resume.getUuid())) return true;
+        if (Objects.equals(this.getUuid(), resume.getUuid())) return true;
         return Objects.equals(uuid, resume.uuid) &&
                 Objects.equals(fullName, resume.fullName) &&
                 Objects.equals(contacts, resume.contacts) &&
