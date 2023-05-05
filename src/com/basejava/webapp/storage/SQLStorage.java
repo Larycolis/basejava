@@ -8,7 +8,9 @@ import com.basejava.webapp.sql.SqlHelper;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /*
@@ -65,6 +67,11 @@ public class SQLStorage implements Storage {
                     throw new NotExistStorageException(resume.getUuid());
                 }
             }
+            sqlHelper.execute("DELETE FROM contact WHERE resume_uuid=?", ps -> {
+                ps.setString(1, resume.getUuid());
+                ps.execute();
+                return null;
+            });
             try (PreparedStatement ps = conn.prepareStatement("UPDATE contact SET type=?, value=? WHERE resume_uuid=?")) {
                 for (Map.Entry<ContactType, String> e : resume.getContacts().entrySet()) {
                     ps.setString(1, e.getKey().name());
@@ -132,7 +139,11 @@ public class SQLStorage implements Storage {
                             results.add(resume);
                             tempUuid = uuid;
                         }
-                        resume.addContact(ContactType.valueOf(rs.getString("type")), rs.getString("value"));
+                        ContactType type = ContactType.valueOf(rs.getString("type"));
+                        String value = rs.getString("value");
+                        if (value != null) {
+                            resume.addContact(type, value);
+                        }
                     }
                     return results;
                 });
