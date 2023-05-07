@@ -86,8 +86,10 @@ public class SQLStorage implements Storage {
                         throw new NotExistStorageException(uuid);
                     }
                     Resume resume = new Resume(uuid, rs.getString("full_name"));
+                    ContactType type = ContactType.valueOf(rs.getString("type"));
+                    String value = rs.getString("value");
                     do {
-                        resume.addContact(ContactType.valueOf(rs.getString("type")), rs.getString("value"));
+                        doAddContacts(resume, type, value);
                     } while (rs.next());
                     return resume;
                 });
@@ -128,7 +130,7 @@ public class SQLStorage implements Storage {
                         ContactType type = ContactType.valueOf(rs.getString("type"));
                         String value = rs.getString("value");
                         if (value != null) {
-                            resume.addContact(type, value);
+                            doAddContacts(resume, type, value);
                         }
                     }
                     return results;
@@ -144,7 +146,7 @@ public class SQLStorage implements Storage {
         });
     }
 
-    private void doInsertContacts(Connection conn, Resume resume) {
+    private void doInsertContacts(Connection conn, Resume resume) throws SQLException {
         try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES(?,?,?)")) {
             for (Map.Entry<ContactType, String> e : resume.getContacts().entrySet()) {
                 ps.setString(1, resume.getUuid());
@@ -153,8 +155,10 @@ public class SQLStorage implements Storage {
                 ps.addBatch();
             }
             ps.executeBatch();
-        } catch (SQLException e) {
-            e.getStackTrace();
         }
+    }
+
+    private void doAddContacts(Resume resume, ContactType type, String value) {
+        resume.addContact(type, value);
     }
 }
