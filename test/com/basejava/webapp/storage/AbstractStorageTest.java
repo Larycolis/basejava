@@ -92,7 +92,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() throws IOException {
-        Resume updatedResume = new Resume(UUID_1, FULL_NAME_4);
+        Resume updatedResume = ResumeTestDataNoName.createResume(UUID_1, FULL_NAME_4);
         storage.update(updatedResume);
         Assert.assertEquals(updatedResume, storage.get(UUID_1));
     }

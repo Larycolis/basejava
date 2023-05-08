@@ -57,14 +57,10 @@ public class SQLStorage implements Storage {
                     throw new NotExistStorageException(resume.getUuid());
                 }
             }
-
-            if (!(resume.getContacts()).isEmpty()) {
-                try (PreparedStatement ps = conn.prepareStatement("DELETE FROM contact WHERE resume_uuid=?")) {
-                    ps.setString(1, resume.getUuid());
-                    ps.executeUpdate();
-                }
+            try (PreparedStatement ps = conn.prepareStatement("DELETE FROM contact WHERE resume_uuid=?")) {
+                ps.setString(1, resume.getUuid());
+                ps.executeUpdate();
             }
-
             doInsertContacts(conn, resume);
             return null;
         });
