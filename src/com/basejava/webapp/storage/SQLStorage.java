@@ -6,9 +6,7 @@ import com.basejava.webapp.model.Resume;
 import com.basejava.webapp.sql.SqlHelper;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 /*
@@ -18,6 +16,8 @@ if (!rs.next()) - если в результате отправки команд
 Когда в типизированном методе ничего не нужно возвращать нужно пометить это конструкцией, например, sqlHelper.<Void>.execute()
  */
 
+// TODO implement Section (except OrganizationSection)
+// TODO Join and split ListSection by '\n'
 public class SQLStorage implements Storage {
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
     public final SqlHelper sqlHelper;
@@ -82,7 +82,7 @@ public class SQLStorage implements Storage {
                     }
                     Resume resume = new Resume(uuid, rs.getString("full_name"));
                     do {
-                        doAddContacts(resume, rs);
+                        doAddContact(resume, rs);
                     } while (rs.next());
                     return resume;
                 });
@@ -110,21 +110,17 @@ public class SQLStorage implements Storage {
                         "ORDER BY r.full_name, r.uuid",
                 ps -> {
                     ResultSet rs = ps.executeQuery();
-                    List<Resume> results = new ArrayList<>();
-                    String tempUuid = null;
-                    Resume resume = null;
+                    Map<String, Resume> map = new LinkedHashMap<>();
                     while (rs.next()) {
                         String uuid = rs.getString("uuid");
-                        if (!uuid.equals(tempUuid)) {
+                        Resume resume = map.get(uuid);
+                        if (resume == null) {
                             resume = new Resume(uuid, rs.getString("full_name"));
-                            results.add(resume);
-                            tempUuid = uuid;
+                            map.put(uuid, resume);
                         }
-                        if (rs.getString("value") != null) {
-                            doAddContacts(resume, rs);
-                        }
+                        doAddContact(resume, rs);
                     }
-                    return results;
+                    return new ArrayList<>(map.values());
                 });
     }
 
@@ -149,11 +145,10 @@ public class SQLStorage implements Storage {
         }
     }
 
-    private void doAddContacts(Resume resume, ResultSet rs) throws SQLException {
-        final ContactType type = ContactType.valueOf(rs.getString("type"));
+    private void doAddContact(Resume resume, ResultSet rs) throws SQLException {
         final String value = rs.getString("value");
         if (value != null) {
-            resume.addContact(type, value);
+            resume.addContact(ContactType.valueOf(rs.getString("type")), value);
         }
     }
 }
