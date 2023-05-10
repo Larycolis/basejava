@@ -13,10 +13,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class AbstractStorageTest {
     protected final static File STORAGE_DIR = Config.getConfig().getStorageDir();
@@ -38,13 +35,6 @@ public abstract class AbstractStorageTest {
     private static final Resume RESUME_3;
     private static final Resume RESUME_4;
 
-//    static {
-//        RESUME_1 = new Resume(UUID_1, FULL_NAME_1);
-//        RESUME_2 = new Resume(UUID_2, FULL_NAME_2);
-//        RESUME_3 = new Resume(UUID_3, FULL_NAME_3);
-//        RESUME_4 = new Resume(UUID_4, FULL_NAME_4);
-//    }
-
     static {
         RESUME_1 = ResumeTestDataKislin.createResume(UUID_1, FULL_NAME_1);
         RESUME_2 = ResumeTestDataBogdanova.createResume(UUID_2, FULL_NAME_2);
@@ -63,11 +53,6 @@ public abstract class AbstractStorageTest {
         storage.save(RESUME_2);
         storage.save(RESUME_3);
     }
-
-//    @After
-//    public void afterAll() {
-//        storage.clear();
-//    }
 
     @Test
     public void clear() {
@@ -130,6 +115,7 @@ public abstract class AbstractStorageTest {
     public void getAllSorted() {
         List<Resume> expected = new ArrayList<>(Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
         List<Resume> actual = storage.getAllSorted();
+        Collections.sort(expected);
         Assert.assertEquals(3, actual.size());
         Assert.assertEquals(expected, actual);
     }

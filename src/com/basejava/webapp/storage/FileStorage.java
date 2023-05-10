@@ -16,14 +16,14 @@ public class FileStorage extends AbstractStorage<File> {
     private final StreamSerializerStrategy streamSerializerStrategy;
 
     protected FileStorage(File directory, StreamSerializerStrategy streamSerializerStrategy) {
-        Objects.requireNonNull(directory, "directory must not be null");
+        Objects.requireNonNull(directory, " directory must not be null");
         this.directory = directory;
         this.streamSerializerStrategy = streamSerializerStrategy;
         if (!directory.isDirectory()) {
-            throw new IllegalArgumentException(directory.getAbsolutePath() + "is not directory");
+            throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
         }
         if (!directory.canRead() || !directory.canWrite()) {
-            throw new IllegalArgumentException(directory.getAbsolutePath() + "is not readable/writable");
+            throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writable");
         }
     }
 
