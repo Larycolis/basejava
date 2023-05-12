@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 /*
 DriverManager - сервис для управления JDBC-драйверами, достает коннект из базы по креденшелам
 ResultSet - после отправки команды SQL возвращает результат выполнения
+PreparedStatement отдает команду SQL
 if (!rs.next()) - если в результате отправки команды результат нет, то, например выбросить exception
 Когда в типизированном методе ничего не нужно возвращать нужно пометить это конструкцией, например, sqlHelper.<Void>.execute()
  */
@@ -43,6 +44,7 @@ public class SQLStorage implements Storage {
                 ps.execute();
             }
             doInsertContacts(conn, resume);
+            doInsertSections(conn, resume);
             return null;
         });
     }
@@ -58,11 +60,12 @@ public class SQLStorage implements Storage {
                     throw new NotExistStorageException(resume.getUuid());
                 }
             }
-            try (PreparedStatement ps = conn.prepareStatement("DELETE FROM contact WHERE resume_uuid=?")) {
-                ps.setString(1, resume.getUuid());
-                ps.executeUpdate();
-            }
+
+            doDelete(conn, "DELETE FROM contact WHERE resume_uuid=?", resume);
+            doDelete(conn, "DELETE FROM section WHERE resume_uuid=?", resume);
             doInsertContacts(conn, resume);
+            doInsertSections(conn, resume);
+
             return null;
         });
     }
@@ -70,23 +73,35 @@ public class SQLStorage implements Storage {
     @Override
     public Resume get(String uuid) {
         LOG.info("Get " + uuid);
-        return sqlHelper.execute("" +
-                        "SELECT * FROM resume r " +
-                        "LEFT JOIN contact c " +
-                        "ON r.uuid = c.resume_uuid " +
-                        "WHERE r.uuid=?",
-                ps -> {
-                    ps.setString(1, uuid);
-                    ResultSet rs = ps.executeQuery();
-                    if (!rs.next()) {
-                        throw new NotExistStorageException(uuid);
-                    }
-                    Resume resume = new Resume(uuid, rs.getString("full_name"));
-                    do {
-                        doAddContact(resume, rs);
-                    } while (rs.next());
-                    return resume;
-                });
+        return sqlHelper.transactionExecute(conn -> {
+            Resume resume;
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r WHERE r.uuid=?")) {
+                ps.setString(1, uuid);
+                ResultSet rs = ps.executeQuery();
+                if (!rs.next()) {
+                    throw new NotExistStorageException(uuid);
+                }
+                resume = new Resume(uuid, rs.getString("full_name"));
+            }
+
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM contact c WHERE c.resume_uuid=?")) {
+                ps.setString(1, uuid);
+                ResultSet rs = ps.executeQuery();
+                do {
+                    doAddContact(resume, rs);
+                } while (rs.next());
+            }
+
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM section s WHERE s.resume_uuid=?")) {
+                ps.setString(1, uuid);
+                ResultSet rs = ps.executeQuery();
+                do {
+                    doAddSection(resume, rs);
+                } while (rs.next());
+            }
+
+            return resume;
+        });
     }
 
     @Override
@@ -161,6 +176,15 @@ public class SQLStorage implements Storage {
     }
 
     private void doInsertSections(Connection conn, Resume resume) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement("INSERT INTO section (resume_uuid, type, value) VALUES(?,?,?)")) {
+            for (Map.Entry<ContactType, String> e : resume.getContacts().entrySet()) {
+                ps.setString(1, resume.getUuid());
+                ps.setString(2, e.getKey().name());
+                ps.setString(3, e.getValue()); // вместо value тут нужно что-то типа свич кейса для разных видов секций
+                ps.addBatch();
+            }
+            ps.executeBatch();
+        }
     }
 
     private void doAddContact(Resume resume, ResultSet rs) throws SQLException {
@@ -174,6 +198,13 @@ public class SQLStorage implements Storage {
         String value = rs.getString("value");
         if (value != null) {
             resume.addContact(ContactType.valueOf(rs.getString("type")), value); // вместо value тут нужно что-то типа свич кейса для разных видов секций
+        }
+    }
+
+    private void doDelete(Connection conn, String sqlCommand, Resume resume) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement(sqlCommand)) {
+            ps.setString(1, resume.getUuid());
+            ps.executeUpdate();
         }
     }
 }
