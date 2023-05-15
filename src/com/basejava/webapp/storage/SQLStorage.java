@@ -1,8 +1,7 @@
 package com.basejava.webapp.storage;
 
 import com.basejava.webapp.exeption.NotExistStorageException;
-import com.basejava.webapp.model.ContactType;
-import com.basejava.webapp.model.Resume;
+import com.basejava.webapp.model.*;
 import com.basejava.webapp.sql.SqlHelper;
 
 import java.sql.*;
@@ -17,9 +16,6 @@ if (!rs.next()) - если в результате отправки команд
 Когда в типизированном методе ничего не нужно возвращать нужно пометить это конструкцией, например, sqlHelper.<Void>.execute()
  */
 
-// DONE сделать реализацию getAllSorted через два отдельных запроса: резюме, контакты, секции (except OrganizationSection)
-// TODO implement Section (except OrganizationSection)
-// TODO Join and split ListSection by '\n'
 public class SQLStorage implements Storage {
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
     public final SqlHelper sqlHelper;
@@ -60,12 +56,10 @@ public class SQLStorage implements Storage {
                     throw new NotExistStorageException(resume.getUuid());
                 }
             }
-
             doDelete(conn, "DELETE FROM contact WHERE resume_uuid=?", resume);
             doDelete(conn, "DELETE FROM section WHERE resume_uuid=?", resume);
             doInsertContacts(conn, resume);
             doInsertSections(conn, resume);
-
             return null;
         });
     }
@@ -83,23 +77,20 @@ public class SQLStorage implements Storage {
                 }
                 resume = new Resume(uuid, rs.getString("full_name"));
             }
-
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM contact c WHERE c.resume_uuid=?")) {
                 ps.setString(1, uuid);
                 ResultSet rs = ps.executeQuery();
-                do {
+                while (rs.next()) {
                     doAddContact(resume, rs);
-                } while (rs.next());
+                }
             }
-
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM section s WHERE s.resume_uuid=?")) {
                 ps.setString(1, uuid);
                 ResultSet rs = ps.executeQuery();
-                do {
+                while (rs.next()) {
                     doAddSection(resume, rs);
-                } while (rs.next());
+                }
             }
-
             return resume;
         });
     }
@@ -121,7 +112,6 @@ public class SQLStorage implements Storage {
         LOG.info("getAllSorted");
         return sqlHelper.transactionExecute(conn -> {
             Map<String, Resume> map = new LinkedHashMap<>();
-
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r ORDER BY r.full_name, r.uuid")) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
@@ -133,7 +123,6 @@ public class SQLStorage implements Storage {
                     }
                 }
             }
-
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM contact c")) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
@@ -141,7 +130,6 @@ public class SQLStorage implements Storage {
                     doAddContact(resume, rs);
                 }
             }
-
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM section s")) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
@@ -149,7 +137,6 @@ public class SQLStorage implements Storage {
                     doAddSection(resume, rs);
                 }
             }
-
             return new ArrayList<>(map.values());
         });
     }
@@ -177,10 +164,25 @@ public class SQLStorage implements Storage {
 
     private void doInsertSections(Connection conn, Resume resume) throws SQLException {
         try (PreparedStatement ps = conn.prepareStatement("INSERT INTO section (resume_uuid, type, value) VALUES(?,?,?)")) {
-            for (Map.Entry<ContactType, String> e : resume.getContacts().entrySet()) {
+            for (Map.Entry<SectionType, AbstractSection> e : resume.getSections().entrySet()) {
                 ps.setString(1, resume.getUuid());
                 ps.setString(2, e.getKey().name());
-                ps.setString(3, e.getValue()); // вместо value тут нужно что-то типа свич кейса для разных видов секций
+                SectionType type = e.getKey();
+                AbstractSection section = e.getValue();
+                switch (type) {
+                    case PERSONAL:
+                    case OBJECTIVE:
+                        ps.setString(3, ((TextSection) section).getText());
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        ps.setString(3, ((ListSection) section).getList().toString());
+                        break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        //  ignore EXPERIENCE and EDUCATION
+                        continue;
+                }
                 ps.addBatch();
             }
             ps.executeBatch();
@@ -196,8 +198,27 @@ public class SQLStorage implements Storage {
 
     private void doAddSection(Resume resume, ResultSet rs) throws SQLException {
         String value = rs.getString("value");
-        if (value != null) {
-            resume.addContact(ContactType.valueOf(rs.getString("type")), value); // вместо value тут нужно что-то типа свич кейса для разных видов секций
+        for (Map.Entry<SectionType, AbstractSection> e : resume.getSections().entrySet()) {
+            if (value != null) {
+                SectionType type = e.getKey();
+                AbstractSection section;
+                switch (type) {
+                    case PERSONAL:
+                    case OBJECTIVE:
+                        section = new TextSection(value);
+                        resume.addSection(type, section);
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        section = new ListSection(Arrays.asList(value.split("\n")));
+                        resume.addSection(type, section);
+                        break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        //  ignore EXPERIENCE and EDUCATION
+                        break;
+                }
+            }
         }
     }
 
