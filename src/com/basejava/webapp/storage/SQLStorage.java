@@ -176,7 +176,7 @@ public class SQLStorage implements Storage {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        ps.setString(3, ((ListSection) section).getList().toString());
+                        ps.setString(3, String.join("\n", ((ListSection) section).getList()));
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
