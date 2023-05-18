@@ -1,6 +1,7 @@
 package com.basejava.webapp.web;
 
 import com.basejava.webapp.Config;
+import com.basejava.webapp.model.ContactType;
 import com.basejava.webapp.model.Resume;
 import com.basejava.webapp.storage.Storage;
 
@@ -31,7 +32,7 @@ public class ResumeServlet extends HttpServlet {
         writer.write("<html>\n" +
                 "                <body>\n" +
                 "                <h2>Resumes Table</h2>\n" +
-                "                <table>\n" +
+                "                <table border=\"2\">\n" +
                 "                  <tbody>\n" +
                 "                    <tr>\n" +
                 "                      <th>Uuid</th>\n" +
@@ -39,8 +40,8 @@ public class ResumeServlet extends HttpServlet {
                 "                    </tr>\n");
         for (Resume resume : storage.getAllSorted()) {
             writer.write("<tr>\n" +
-                    "                <td>" + resume.getUuid() + "</td>\n" +
-                    "                <td>" + resume.getFullName() + "</td>\n" +
+                    "                <td><a href=\"resume?uuid=" + resume.getUuid() + "\">" + resume.getFullName() + "</a></td>\n" +
+                    "                <td>" + resume.getContact(ContactType.CELLPHONE) + "</td>\n" +
                     "        </tr>\n");
         }
         writer.write("</tbody>\n" +

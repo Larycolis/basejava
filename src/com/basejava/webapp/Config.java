@@ -11,7 +11,7 @@ import java.util.Properties;
 
 public class Config {
     // private static final File PROPS = new File("config\\resumes.properties");
-    private static final File PROPS = new File("C:\\IDEA_projects\\basejava\\config\\resumes.properties");
+    private static final File PROPS = new File(getHomeDir(), "\\config\\resumes.properties");
     private static final Config INSTANCE = new Config();
 
     private final File storageDir;
@@ -38,5 +38,14 @@ public class Config {
         } catch (IOException e) {
             throw new IllegalStateException("Invalid config file " + PROPS.getAbsolutePath());
         }
+    }
+
+    private static File getHomeDir() {
+        String root = System.getProperty("homeDir");
+        File homeDir = new File(root == null ? "." : root);
+        if (!homeDir.isDirectory()) {
+            throw new IllegalStateException(homeDir + " is not directory");
+        }
+        return homeDir;
     }
 }
