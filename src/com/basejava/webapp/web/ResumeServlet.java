@@ -27,41 +27,30 @@ public class ResumeServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         //response.setHeader("Content-Type", "text/html; charset=UTF-8");
         response.setContentType("text/html; charset=UTF-8");
-//        String name = request.getParameter("name");
-//        response.getWriter().write(name == null ? "Hello Resumes!" : "Hello " + name + '!');
-
         Writer writer = response.getWriter();
-        writer.write("""
-                 <html>
-                 <body>
-                 <h2>Resumes Table</h2>
-                 <table>
-                 <thead>
-                 <tr>
-                 <th>Uuid</th>
-                 <th>Full name</th>
-                 </tr>
-                 </thead>
-                """);
+        writer.write("<html>\n" +
+                "                <body>\n" +
+                "                <h2>Resumes Table</h2>\n" +
+                "                <table>\n" +
+                "                  <tbody>\n" +
+                "                    <tr>\n" +
+                "                      <th>Uuid</th>\n" +
+                "                      <th>Full name</th>\n" +
+                "                    </tr>\n");
         for (Resume resume : storage.getAllSorted()) {
-            writer.write("""
-                    <tr>
-                    <th>resume.getUuid()</th>
-                    <th>resume.getFullName()</th>
-                    </tr>
-                    """);
+            writer.write("<tr>\n" +
+                    "                <td>" + resume.getUuid() + "</td>\n" +
+                    "                <td>" + resume.getFullName() + "</td>\n" +
+                    "        </tr>\n");
         }
-        writer.write("""
-                </table>
-                </body>
-                </html>
-                """);
+        writer.write("</tbody>\n" +
+                "                </table>\n" +
+                "                </body>\n" +
+                "                </html>");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
-
-
 }
