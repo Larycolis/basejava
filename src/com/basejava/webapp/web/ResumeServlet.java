@@ -24,30 +24,32 @@ public class ResumeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        //response.setHeader("Content-Type", "text/html; charset=UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
-        Writer writer = response.getWriter();
-        writer.write("<html>\n" +
-                "                <body>\n" +
-                "                <h2>Resumes Table</h2>\n" +
-                "                <table border=\"2\">\n" +
-                "                  <tbody>\n" +
-                "                    <tr>\n" +
-                "                      <th>Uuid</th>\n" +
-                "                      <th>Full name</th>\n" +
-                "                    </tr>\n");
-        for (Resume resume : storage.getAllSorted()) {
-            writer.write("<tr>\n" +
-                    "                <td><a href=\"resume?uuid=" + resume.getUuid() + "\">" + resume.getFullName() + "</a></td>\n" +
-                    "                <td>" + resume.getContact(ContactType.CELLPHONE) + "</td>\n" +
-                    "        </tr>\n");
-        }
-        writer.write("</tbody>\n" +
-                "                </table>\n" +
-                "                </body>\n" +
-                "                </html>");
+        request.setAttribute("resume", storage.getAllSorted());
+        request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
+//        request.setCharacterEncoding("UTF-8");
+//        response.setCharacterEncoding("UTF-8");
+//        //response.setHeader("Content-Type", "text/html; charset=UTF-8");
+//        response.setContentType("text/html; charset=UTF-8");
+//        Writer writer = response.getWriter();
+//        writer.write("<html>\n" +
+//                "                <body>\n" +
+//                "                <h2>Resumes Table</h2>\n" +
+//                "                <table border=\"2\">\n" +
+//                "                  <tbody>\n" +
+//                "                    <tr>\n" +
+//                "                      <th>Uuid</th>\n" +
+//                "                      <th>Full name</th>\n" +
+//                "                    </tr>\n");
+//        for (Resume resume : storage.getAllSorted()) {
+//            writer.write("<tr>\n" +
+//                    "                <td><a href=\"resume?uuid=" + resume.getUuid() + "\">" + resume.getFullName() + "</a></td>\n" +
+//                    "                <td>"resume.getContact(ContactType.CELLPHONE)"</td>\n" +
+//                    "        </tr>\n");
+//        }
+//        writer.write("</tbody>\n" +
+//                "                </table>\n" +
+//                "                </body>\n" +
+//                "                </html>");
     }
 
     @Override
