@@ -4,6 +4,7 @@
 <%@ page import="com.basejava.webapp.model.ContactType" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<head>
 <meta>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="css/style.css">
