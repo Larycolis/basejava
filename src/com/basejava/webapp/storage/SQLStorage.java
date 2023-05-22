@@ -179,7 +179,7 @@ public class SQLStorage implements Storage {
                     case OBJECTIVE:
                         ps.setString(3, ((TextSection) section).getText());
                         break;
-                    case ACHIEVEMENT:
+                    case ACHIEVEMENTS:
                     case QUALIFICATIONS:
                         ps.setString(3, String.join("\n", ((ListSection) section).getList()));
                         break;
@@ -213,7 +213,7 @@ public class SQLStorage implements Storage {
                         section = new TextSection(value);
                         resume.addSection(type, section);
                         break;
-                    case ACHIEVEMENT:
+                    case ACHIEVEMENTS:
                     case QUALIFICATIONS:
                         section = new ListSection(Arrays.asList(value.split("\n")));
                         resume.addSection(type, section);

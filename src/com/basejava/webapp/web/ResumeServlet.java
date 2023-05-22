@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.Writer;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage;
@@ -58,7 +57,7 @@ public class ResumeServlet extends HttpServlet {
         Resume resume = storage.get(uuid);
         resume.setFullName(fullName);
 
-        for(ContactType type : ContactType.values()) {
+        for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
             if (value != null && value.trim().length() != 0) {
                 resume.addContact(type, value);

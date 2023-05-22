@@ -26,16 +26,16 @@ public class DataStreamSerializer implements StreamSerializerStrategy {
                 AbstractSection section = entry.getValue();
                 dos.writeUTF(type.name());
                 switch (type) {
-                    case PERSONAL :
-                    case OBJECTIVE :
+                    case PERSONAL:
+                    case OBJECTIVE:
                         dos.writeUTF(((TextSection) section).getText());
                         break;
-                    case ACHIEVEMENT :
-                    case QUALIFICATIONS :
+                    case ACHIEVEMENTS:
+                    case QUALIFICATIONS:
                         writeCollection(dos, ((ListSection) section).getList(), dos::writeUTF);
                         break;
-                    case EXPERIENCE :
-                    case EDUCATION :
+                    case EXPERIENCE:
+                    case EDUCATION:
                         writeCollection(dos, ((OrganizationSection) section).getOrganization(), org -> {
                             dos.writeUTF(org.getHomePage().getName());
                             dos.writeUTF(org.getHomePage().getUrl());
@@ -82,14 +82,14 @@ public class DataStreamSerializer implements StreamSerializerStrategy {
 
     private AbstractSection readSection(DataInputStream dis, SectionType sectionType) throws IOException {
         switch (sectionType) {
-            case PERSONAL :
-            case OBJECTIVE :
+            case PERSONAL:
+            case OBJECTIVE:
                 return new TextSection(dis.readUTF());
-            case ACHIEVEMENT :
-            case QUALIFICATIONS :
+            case ACHIEVEMENTS:
+            case QUALIFICATIONS:
                 return new ListSection(readList(dis, dis::readUTF));
-            case EXPERIENCE :
-            case EDUCATION :
+            case EXPERIENCE:
+            case EDUCATION:
                 return new OrganizationSection(
                         readList(dis, () -> new Organization(
                                 new Link(dis.readUTF(), dis.readUTF()),
@@ -119,6 +119,7 @@ public class DataStreamSerializer implements StreamSerializerStrategy {
     private LocalDate readeLocalDate(DataInputStream dis) throws IOException {
         return LocalDate.of(dis.readInt(), dis.readInt(), 1);
     }
+
     private void readItems(DataInputStream dis, ElementProcessor processor) throws IOException {
         int size = dis.readInt();
         for (int i = 0; i < size; i++) {

@@ -106,7 +106,7 @@ public class ResumeTestDataKislin {
     private static void addSection(Resume resume) {
         resume.addSection(PERSONAL, new TextSection(PERS_CONT));
         resume.addSection(OBJECTIVE, new TextSection(OBJ_CONT));
-        resume.addSection(ACHIEVEMENT, new ListSection(ACH_1, ACH_2, ACH_3, ACH_4, ACH_5, ACH_6, ACH_7));
+        resume.addSection(ACHIEVEMENTS, new ListSection(ACH_1, ACH_2, ACH_3, ACH_4, ACH_5, ACH_6, ACH_7));
         resume.addSection(QUALIFICATIONS, new ListSection(QUAL_1, QUAL_2, QUAL_3, QUAL_4, QUAL_5, QUAL_6, QUAL_7, QUAL_8, QUAL_9, QUAL_10, QUAL_11, QUAL_12, QUAL_13, QUAL_14));
         resume.addSection(EXPERIENCE, new OrganizationSection(EXP_8, EXP_7, EXP_6, EXP_5, EXP_4, EXP_3, EXP_2, EXP_1));
         resume.addSection(EDUCATION, new OrganizationSection(EDU_6, EDU_5, EDU_4, EDU_3, EDU_2, EDU_1));

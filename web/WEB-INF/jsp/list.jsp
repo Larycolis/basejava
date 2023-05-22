@@ -7,12 +7,13 @@
     <meta>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="css/style.css">
-    <title>Resumes Table</title>
+    <title>List of Resumes</title>
 </head>
 <body>
 <jsp:include page="fragments/header.jsp"/>
+<br/>
 <section>
-    <table border="2" cellpadding="4" cellspacing="0">
+    <table border="1" cellpadding="8" cellspacing="0">
         <tr>
             <th>Name</th>
             <th>Email</th>

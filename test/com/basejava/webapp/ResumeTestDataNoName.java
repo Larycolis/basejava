@@ -30,15 +30,15 @@ public class ResumeTestDataNoName {
         return resume;
     }
 
-    private static void addContact(Resume resume){
+    private static void addContact(Resume resume) {
         resume.addContact(ContactType.CELLPHONE, PH_NUM);
         resume.addContact(ContactType.EMAIL, E_MAIL);
     }
 
-    private static void addSection(Resume resume){
+    private static void addSection(Resume resume) {
         resume.addSection(PERSONAL, new TextSection(PERS_CONT));
         resume.addSection(OBJECTIVE, new TextSection(OBJ_CONT));
-        resume.addSection(ACHIEVEMENT, new ListSection(ACH_1));
+        resume.addSection(ACHIEVEMENTS, new ListSection(ACH_1));
         resume.addSection(QUALIFICATIONS, new ListSection(QUAL_1));
         resume.addSection(EXPERIENCE, new OrganizationSection(EXP_1));
         resume.addSection(EDUCATION, new OrganizationSection(EDU_1));
