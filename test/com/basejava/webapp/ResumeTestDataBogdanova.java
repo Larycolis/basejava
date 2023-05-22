@@ -8,7 +8,7 @@ import static com.basejava.webapp.model.SectionType.*;
 
 public class ResumeTestDataBogdanova {
     private static final String PH_NUM = "+7(963) 258-6061";
-    private static final String ACCOUNT = "skype:larycolis";
+    private static final String ACCOUNT = "larycolis";
     private static final String E_MAIL = "larycolis@gmail.com";
     private static final String LINK_1 = "https://www.linkedin.com/in/evgeniya-bogdanova-2522b3250/";
     private static final String LINK_2 = "https://github.com/Larycolis";

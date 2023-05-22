@@ -24,36 +24,49 @@ public class ResumeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("resume", storage.getAllSorted());
-        request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
-//        request.setCharacterEncoding("UTF-8");
-//        response.setCharacterEncoding("UTF-8");
-//        //response.setHeader("Content-Type", "text/html; charset=UTF-8");
-//        response.setContentType("text/html; charset=UTF-8");
-//        Writer writer = response.getWriter();
-//        writer.write("<html>\n" +
-//                "                <body>\n" +
-//                "                <h2>Resumes Table</h2>\n" +
-//                "                <table border=\"2\">\n" +
-//                "                  <tbody>\n" +
-//                "                    <tr>\n" +
-//                "                      <th>Uuid</th>\n" +
-//                "                      <th>Full name</th>\n" +
-//                "                    </tr>\n");
-//        for (Resume resume : storage.getAllSorted()) {
-//            writer.write("<tr>\n" +
-//                    "                <td><a href=\"resume?uuid=" + resume.getUuid() + "\">" + resume.getFullName() + "</a></td>\n" +
-//                    "                <td>"resume.getContact(ContactType.CELLPHONE)"</td>\n" +
-//                    "        </tr>\n");
-//        }
-//        writer.write("</tbody>\n" +
-//                "                </table>\n" +
-//                "                </body>\n" +
-//                "                </html>");
+        String uuid = request.getParameter("uuid");
+        String action = request.getParameter("action");
+        if (action == null) {
+            request.setAttribute("resumes", storage.getAllSorted());
+            request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
+            return;
+        }
+        Resume resume = null;
+        switch (action) {
+            case "delete":
+                storage.delete(uuid);
+                response.sendRedirect("resume");
+                return;
+            case "view":
+            case "edit":
+                resume = storage.get(uuid);
+                break;
+            default:
+                throw new IllegalArgumentException("Action " + action + " is illegal");
+        }
+        request.setAttribute("resume", resume);
+        request.getRequestDispatcher(
+                ("view".equals(action) ? "WEB-INF/jsp/view.jsp" : "WEB-INF/jsp/edit.jsp")
+        ).forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        String uuid = request.getParameter("uuid");
+        String fullName = request.getParameter("fullName");
+        Resume resume = storage.get(uuid);
+        resume.setFullName(fullName);
 
+        for(ContactType type : ContactType.values()) {
+            String value = request.getParameter(type.name());
+            if (value != null && value.trim().length() != 0) {
+                resume.addContact(type, value);
+            } else {
+                resume.getContacts().remove(type);
+            }
+        }
+        storage.update(resume);
+        response.sendRedirect("resume");
     }
 }
