@@ -3,10 +3,8 @@ package com.basejava.webapp.storage;
 import com.basejava.webapp.Config;
 import com.basejava.webapp.exeption.ExistStorageException;
 import com.basejava.webapp.exeption.NotExistStorageException;
+import com.basejava.webapp.model.ContactType;
 import com.basejava.webapp.model.Resume;
-import com.basejava.webapp.ResumeTestDataBogdanova;
-import com.basejava.webapp.ResumeTestDataKislin;
-import com.basejava.webapp.ResumeTestDataNoName;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,32 +13,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+import static com.basejava.webapp.TestData.*;
+
 public abstract class AbstractStorageTest {
     protected final static File STORAGE_DIR = Config.getConfig().getStorageDir();
     protected final Storage storage;
-
-    private static final String UUID_NOT_EXIST = "dummy";
-    private static final String UUID_1 = UUID.randomUUID().toString();
-    private static final String UUID_2 = UUID.randomUUID().toString();
-    private static final String UUID_3 = UUID.randomUUID().toString();
-    private static final String UUID_4 = UUID.randomUUID().toString();
-
-    private static final String FULL_NAME_1 = "Григорий Кислин";
-    private static final String FULL_NAME_2 = "Евгения Богданова";
-    private static final String FULL_NAME_3 = "Некий Никто";
-    private static final String FULL_NAME_4 = "Иммануил Кант";
-
-    private static final Resume RESUME_1;
-    private static final Resume RESUME_2;
-    private static final Resume RESUME_3;
-    private static final Resume RESUME_4;
-
-    static {
-        RESUME_1 = ResumeTestDataKislin.createResume(UUID_1, FULL_NAME_1);
-        RESUME_2 = ResumeTestDataBogdanova.createResume(UUID_2, FULL_NAME_2);
-        RESUME_3 = ResumeTestDataNoName.createResume(UUID_3, FULL_NAME_3);
-        RESUME_4 = ResumeTestDataNoName.createResume(UUID_4, FULL_NAME_4);
-    }
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -77,7 +54,10 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() throws IOException {
-        Resume updatedResume = ResumeTestDataNoName.createResume(UUID_1, FULL_NAME_4);
+        Resume updatedResume = new Resume(UUID_1, "Updated name");
+        RESUME_1.addContact(ContactType.EMAIL, "update@email.com");
+        RESUME_1.addContact(ContactType.SKYPE, "update Skype");
+        RESUME_1.addContact(ContactType.CELLPHONE, "+8569852147");
         storage.update(updatedResume);
         Assert.assertEquals(updatedResume, storage.get(UUID_1));
     }
