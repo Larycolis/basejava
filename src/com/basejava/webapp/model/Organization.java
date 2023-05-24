@@ -20,6 +20,8 @@ import static com.basejava.webapp.util.DateUtil.of;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
     private static final long serialVersionUUID = 1L;
+
+    public static final Organization EMPTY = new Organization("", "", Period.EMPTY);
     private Link homePage;
     private List<Period> period = new ArrayList<>();
 
@@ -67,6 +69,8 @@ public class Organization implements Serializable {
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Period implements Serializable {
         private static final long serialVersionUUID = 1L;
+
+        public static final Period EMPTY = new Period();
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate startDate;
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
