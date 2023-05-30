@@ -38,30 +38,49 @@ public class ResumeServlet extends HttpServlet {
             case "add":
                 resume = Resume.EMPTY;
                 break;
+            case "delete":
+                storage.delete(uuid);
+                response.sendRedirect("resume");
+                return;
             case "view":
                 resume = storage.get(uuid);
                 break;
             case "edit":
                 resume = storage.get(uuid);
-                for (SectionType type : new SectionType[]{SectionType.EXPERIENCE, SectionType.EDUCATION}) {
-                    OrganizationSection section = (OrganizationSection) resume.getSection(type);
-                    List<Organization> emptyFirstOrganizations = new ArrayList<>();
-                    emptyFirstOrganizations.add(Organization.EMPTY);
-                    if (section != null) {
-                        for (Organization organization : section.getOrganization()) {
-                            List<Organization.Period> emptyFirstPeriod = new ArrayList<>();
-                            emptyFirstPeriod.add(Organization.Period.EMPTY);
-                            emptyFirstPeriod.addAll(organization.getPeriod());
-                            emptyFirstOrganizations.add(new Organization(organization.getHomePage(), emptyFirstPeriod));
-                        }
+                for (SectionType type : SectionType.values()) {
+                    AbstractSection section = resume.getSection(type);
+                    switch (type) {
+                        case OBJECTIVE:
+                        case PERSONAL:
+                            if (section == null) {
+                                section = TextSection.EMPTY;
+                            }
+                            break;
+                        case ACHIEVEMENTS:
+                        case QUALIFICATIONS:
+                            if (section == null) {
+                                section = ListSection.EMPTY;
+                            }
+                            break;
+                        case EXPERIENCE:
+                        case EDUCATION:
+                            OrganizationSection orgSection = (OrganizationSection) section;
+                            List<Organization> emptyFirstOrganizations = new ArrayList<>();
+                            emptyFirstOrganizations.add(Organization.EMPTY);
+                            if (orgSection != null) {
+                                for (Organization organization : orgSection.getOrganization()) {
+                                    List<Organization.Period> emptyFirstPeriod = new ArrayList<>();
+                                    emptyFirstPeriod.add(Organization.Period.EMPTY);
+                                    emptyFirstPeriod.addAll(organization.getPeriod());
+                                    emptyFirstOrganizations.add(new Organization(organization.getHomePage(), emptyFirstPeriod));
+                                }
+                            }
+                            section = new OrganizationSection(emptyFirstOrganizations);
+                            break;
                     }
-                    resume.setSection(type, new OrganizationSection(emptyFirstOrganizations));
+                    resume.setSection(type, section);
                 }
                 break;
-            case "delete":
-                storage.delete(uuid);
-                response.sendRedirect("resume");
-                return;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");
         }
