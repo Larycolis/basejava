@@ -30,6 +30,16 @@ public class TestData {
         RESUME_1.setContact(ContactType.GITHUB, "https://github.com/gkislin");
         RESUME_1.setContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473/grigory-kislin");
         RESUME_1.setContact(ContactType.HOME_PAGE, "https://gkislin.ru/");
+
+        RESUME_2.setContact(ContactType.EMAIL, "larycolis@gmail.com");
+        RESUME_2.setContact(ContactType.CELLPHONE, "+7(963) 258-6061");
+        RESUME_2.setContact(ContactType.SKYPE, "larycolis");
+        RESUME_2.setContact(ContactType.LINKEDIN, "https://www.linkedin.com/in/evgeniya-bogdanova-2522b3250/");
+        RESUME_2.setContact(ContactType.GITHUB, "https://github.com/Larycolis");
+
+        RESUME_3.setContact(ContactType.EMAIL, "test data");
+        RESUME_3.setContact(ContactType.CELLPHONE, "test data");
+
         RESUME_1.setSection(SectionType.OBJECTIVE,
                 new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
         RESUME_1.setSection(SectionType.PERSONAL,
@@ -59,67 +69,62 @@ public class TestData {
                         "Родной русский, английский \"upper intermediate\""));
         RESUME_1.setSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
-                        new Organization("Alcatel", "https://www.alcatel.ru/",
-                                new Organization.Period(1997, Month.SEPTEMBER, 2005, Month.JANUARY, "Инженер по аппаратному и программному тестированию. ", "Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM)"))));
-        RESUME_1.setSection(SectionType.EXPERIENCE,
-                new OrganizationSection(
-                        new Organization("Siemens AG", "https://www.siemens.com/global/en.html",
-                                new Organization.Period(2005, Month.JANUARY, 2007, Month.FEBRUARY, "Разработчик ПО. ", "Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix)"))));
-        RESUME_1.setSection(SectionType.EXPERIENCE,
-                new OrganizationSection(
-                        new Organization("Enkata", "https://enkata.com/",
-                                new Organization.Period(2007, Month.MARCH, 2008, Month.JUNE, "Разработчик ПО. ", "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей кластерного J2EE приложения (OLAP, Data mining)"))));
-        RESUME_1.setSection(SectionType.EXPERIENCE,
-                new OrganizationSection(
-                        new Organization("Yota", "https://www.yota.ru/",
-                                new Organization.Period(2008, Month.JUNE, 2010, Month.DECEMBER, "Ведущий специалист. ", "Дизайн и имплементация Java EE фреймворка для отдела \"Платежные Системы\" (GlassFish v2.1, v3, OC4J, EJB3, JAX-WS RI 2.1, Servlet 2.4, JSP, JMX, JMS, Maven2). Реализация администрирования, статистики и мониторинга фреймворка. Разработка online JMX клиента (Python/ Jython, Django, ExtJS)"))));
-        RESUME_1.setSection(SectionType.EXPERIENCE,
-                new OrganizationSection(
-                        new Organization("Luxoft (Deutsche Bank)", "https://www.luxoft.ru/",
-                                new Organization.Period(2010, Month.DECEMBER, 2012, Month.APRIL, "Ведущий программист. ", "Участие в проекте Deutsche Bank CRM (WebLogic, Hibernate, Spring, Spring MVC, SmartGWT, GWT, Jasper, Oracle). Реализация клиентской и серверной части CRM. Реализация RIA-приложения для администрирования, мониторинга и анализа результатов в области алгоритмического трейдинга. JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Highstock, Commet, HTML5"))));
-        RESUME_1.setSection(SectionType.EXPERIENCE,
-                new OrganizationSection(
-                        new Organization("RIT Center", null,
-                                new Organization.Period(2012, Month.APRIL, 2014, Month.OCTOBER, "Java архитектор. ", "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python"))));
+                        new Organization("Java Online Projects", "https://javaops.ru/",
+                                new Organization.Period(2013, Month.OCTOBER, "Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок."))));
         RESUME_1.setSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("Wrike", "https://www.wrike.com/",
                                 new Organization.Period(2014, Month.OCTOBER, 2016, Month.JANUARY, "Старший разработчик (backend). ", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO"))));
         RESUME_1.setSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
-                        new Organization("Java Online Projects", "https://javaops.ru/",
-                                new Organization.Period(2013, Month.OCTOBER, "Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок."))));
-        RESUME_1.setSection(SectionType.EDUCATION,
+                        new Organization("RIT Center", null,
+                                new Organization.Period(2012, Month.APRIL, 2014, Month.OCTOBER, "Java архитектор. ", "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python"))));
+        RESUME_1.setSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
-                        new Organization("Заочная физико-техническая школа при МФТИ. ", "https://mipt.ru/",
-                                new Organization.Period(1984, Month.SEPTEMBER, 1987, Month.JUNE, "Закончил с отличием", null))));
-        RESUME_1.setSection(SectionType.EDUCATION,
+                        new Organization("Luxoft (Deutsche Bank)", "https://www.luxoft.ru/",
+                                new Organization.Period(2010, Month.DECEMBER, 2012, Month.APRIL, "Ведущий программист. ", "Участие в проекте Deutsche Bank CRM (WebLogic, Hibernate, Spring, Spring MVC, SmartGWT, GWT, Jasper, Oracle). Реализация клиентской и серверной части CRM. Реализация RIA-приложения для администрирования, мониторинга и анализа результатов в области алгоритмического трейдинга. JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Highstock, Commet, HTML5"))));
+        RESUME_1.setSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
-                        new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "https://itmo.ru/",
-                                new Organization.Period(1993, Month.SEPTEMBER, 1996, Month.JULY, "Инженер (программист Fortran, C)", null),
-                                new Organization.Period(1987, Month.SEPTEMBER, 1993, Month.JULY, "Аспирантура (программист С, С++)", null))));
-        RESUME_1.setSection(SectionType.EDUCATION,
+                        new Organization("Yota", "https://www.yota.ru/",
+                                new Organization.Period(2008, Month.JUNE, 2010, Month.DECEMBER, "Ведущий специалист. ", "Дизайн и имплементация Java EE фреймворка для отдела \"Платежные Системы\" (GlassFish v2.1, v3, OC4J, EJB3, JAX-WS RI 2.1, Servlet 2.4, JSP, JMX, JMS, Maven2). Реализация администрирования, статистики и мониторинга фреймворка. Разработка online JMX клиента (Python/ Jython, Django, ExtJS)"))));
+        RESUME_1.setSection(SectionType.EXPERIENCE,
+                new OrganizationSection(
+                        new Organization("Enkata", "https://enkata.com/",
+                                new Organization.Period(2007, Month.MARCH, 2008, Month.JUNE, "Разработчик ПО. ", "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей кластерного J2EE приложения (OLAP, Data mining)"))));
+        RESUME_1.setSection(SectionType.EXPERIENCE,
+                new OrganizationSection(
+                        new Organization("Siemens AG", "https://www.siemens.com/global/en.html",
+                                new Organization.Period(2005, Month.JANUARY, 2007, Month.FEBRUARY, "Разработчик ПО. ", "Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix)"))));
+        RESUME_1.setSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("Alcatel", "https://www.alcatel.ru/",
-                                new Organization.Period(1997, Month.SEPTEMBER, 1998, Month.MARCH, "6 месяцев обучения цифровым телефонным сетям (Москва)", null))));
+                                new Organization.Period(1997, Month.SEPTEMBER, 2005, Month.JANUARY, "Инженер по аппаратному и программному тестированию. ", "Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM)"))));
         RESUME_1.setSection(SectionType.EDUCATION,
                 new OrganizationSection(
-                        new Organization("Siemens AG", "https://www.siemens.ru/",
-                                new Organization.Period(2005, Month.JANUARY, 2005, Month.APRIL, "3 месяца обучения мобильным IN сетям (Берлин)", null))));
+                        new Organization("Coursera", "https://www.coursera.org/course/progfun",
+                                new Organization.Period(2013, Month.MARCH, 2013, Month.MAY, "'Functional Programming Principles in Scala' by Martin Odersky", null))));
         RESUME_1.setSection(SectionType.EDUCATION,
                 new OrganizationSection(
                         new Organization("Luxoft", "https://www.luxoft-training.ru/training/catalog/course.html?ID=22366",
                                 new Organization.Period(2011, Month.MARCH, 2011, Month.APRIL, "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML'", null))));
         RESUME_1.setSection(SectionType.EDUCATION,
                 new OrganizationSection(
-                        new Organization("Coursera", "https://www.coursera.org/course/progfun",
-                                new Organization.Period(2013, Month.MARCH, 2013, Month.MAY, "'Functional Programming Principles in Scala' by Martin Odersky", null))));
+                        new Organization("Siemens AG", "https://www.siemens.ru/",
+                                new Organization.Period(2005, Month.JANUARY, 2005, Month.APRIL, "3 месяца обучения мобильным IN сетям (Берлин)", null))));
+        RESUME_1.setSection(SectionType.EDUCATION,
+                new OrganizationSection(
+                        new Organization("Alcatel", "https://www.alcatel.ru/",
+                                new Organization.Period(1997, Month.SEPTEMBER, 1998, Month.MARCH, "6 месяцев обучения цифровым телефонным сетям (Москва)", null))));
+        RESUME_1.setSection(SectionType.EDUCATION,
+                new OrganizationSection(
+                        new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "https://itmo.ru/",
+                                new Organization.Period(1987, Month.SEPTEMBER, 1993, Month.JULY, "Аспирантура (программист С, С++)", null),
+                                new Organization.Period(1993, Month.SEPTEMBER, 1996, Month.JULY, "Инженер (программист Fortran, C)", null))));
+        RESUME_1.setSection(SectionType.EDUCATION,
+                new OrganizationSection(
+                        new Organization("Заочная физико-техническая школа при МФТИ. ", "https://mipt.ru/",
+                                new Organization.Period(1984, Month.SEPTEMBER, 1987, Month.JUNE, "Закончил с отличием", null))));
 
-        RESUME_2.setContact(ContactType.EMAIL, "larycolis@gmail.com");
-        RESUME_2.setContact(ContactType.CELLPHONE, "+7(963) 258-6061");
-        RESUME_2.setContact(ContactType.SKYPE, "larycolis");
-        RESUME_2.setContact(ContactType.LINKEDIN, "https://www.linkedin.com/in/evgeniya-bogdanova-2522b3250/");
-        RESUME_2.setContact(ContactType.GITHUB, "https://github.com/Larycolis");
         RESUME_2.setSection(SectionType.OBJECTIVE,
                 new TextSection("Тестировщик и начинающий Java-разработчик"));
         RESUME_2.setSection(SectionType.PERSONAL,
@@ -139,45 +144,44 @@ public class TestData {
                         "Родной русский, английский \"intermediate\", сербский \"A1\""));
         RESUME_2.setSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
-                        new Organization("Иннополис", "innopolis.university/",
-                                new Organization.Period(2021, Month.MARCH, 2021, Month.SEPTEMBER, "Специалист по оформлению презентаций курса (проектная работа). ", "Составление презентаций к курсу \"Автоматизация тестирования\", Оформление презентаций в графическом редакторе"))));
-        RESUME_2.setSection(SectionType.EXPERIENCE,
-                new OrganizationSection(
-                        new Organization("SimbirSoft", null,
-                                new Organization.Period(2021, Month.AUGUST, 2021, Month.OCTOBER, "QA инженер-тестировщик. ", "Составление и актуализация тестовой документации, Оформление, приоритизация и отслеживание исправления дефектов, Проведение тестирования, Контроль за соблюдением воркфлоу"))));
+                        new Organization("Краудтестинг платформа \"Testbirdscrowd\"", "https://nest.testbirds.com/",
+                                new Organization.Period(2020, Month.DECEMBER, "QA инженер-тестировщик. ", "Функциональное тестирование, Smoke-тестирование, Регрессионное тестирование, Кросс-браузерное тестирование, Системное тестирование, Тестирование инсталляции, API тестирование"))));
         RESUME_2.setSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("Nobilis.Team", null,
                                 new Organization.Period(2022, Month.JANUARY, 2022, Month.JULY, "QA инженер-тестировщик. ", "Составление и актуализация тестовой документации, Оформление, приоритизация и отслеживание исправления дефектов, Проведение тестирования, Контроль за соблюдением воркфлоу"))));
         RESUME_2.setSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
-                        new Organization("Краудтестинг платформа \"Testbirdscrowd\"", "https://nest.testbirds.com/",
-                                new Organization.Period(2020, Month.DECEMBER, "QA инженер-тестировщик. ", "Функциональное тестирование, Smoke-тестирование, Регрессионное тестирование, Кросс-браузерное тестирование, Системное тестирование, Тестирование инсталляции, API тестирование"))));
+                        new Organization("SimbirSoft", null,
+                                new Organization.Period(2021, Month.AUGUST, 2021, Month.OCTOBER, "QA инженер-тестировщик. ", "Составление и актуализация тестовой документации, Оформление, приоритизация и отслеживание исправления дефектов, Проведение тестирования, Контроль за соблюдением воркфлоу"))));
+        RESUME_2.setSection(SectionType.EXPERIENCE,
+                new OrganizationSection(
+                        new Organization("Иннополис", "innopolis.university/",
+                                new Organization.Period(2021, Month.MARCH, 2021, Month.SEPTEMBER, "Специалист по оформлению презентаций курса (проектная работа). ", "Составление презентаций к курсу \"Автоматизация тестирования\", Оформление презентаций в графическом редакторе"))));
         RESUME_2.setSection(SectionType.EDUCATION,
                 new OrganizationSection(
-                        new Organization("Санкт-Петербургский гуманитарный университет профсоюзов, Санкт-Петербург", "https://www.gup.ru/",
-                                new Organization.Period(2006, Month.SEPTEMBER, 2012, Month.JULY, "Реклама, Маркетинговые коммуникации и сопровождение медиа-проектов", null))));
-        RESUME_2.setSection(SectionType.EDUCATION,
-                new OrganizationSection(
-                        new Organization("Beonmax", "https://beonmax.com/",
-                                new Organization.Period(2021, Month.MAY, 2021, Month.JUNE, "Курс \"SQL и PostgreSQL (практический курс)\"", null), new Organization.Period(2021, Month.MAY, 2021, Month.MAY, "MySQL (базовый курс)", null))));
-        RESUME_2.setSection(SectionType.EDUCATION,
-                new OrganizationSection(new Organization("Software-testing", null,
-                        new Organization.Period(2021, Month.MAY, 2021, Month.JUNE, "Курс \"Тестирование REST API\"", null))));
-        RESUME_2.setSection(SectionType.EDUCATION,
-                new OrganizationSection(new Organization("Udemy", null,
-                        new Organization.Period(2021, Month.MAY, 2021, Month.JUNE, "Курс: \"Git (полный курс)\"", null))));
+                        new Organization("JavaRush", "https://javarush.com/",
+                                new Organization.Period(2022, Month.JULY, "Основы языка Java", null))));
         RESUME_2.setSection(SectionType.EDUCATION,
                 new OrganizationSection(
                         new Organization("Base Java (topjava.ru)", "https://javaops.ru/",
                                 new Organization.Period(2023, Month.JANUARY, 2023, Month.MAY, "Курс \"Java-разработчик веб-приложений\"", null))));
         RESUME_2.setSection(SectionType.EDUCATION,
+                new OrganizationSection(new Organization("Udemy", null,
+                        new Organization.Period(2021, Month.MAY, 2021, Month.JUNE, "Курс: \"Git (полный курс)\"", null))));
+        RESUME_2.setSection(SectionType.EDUCATION,
+                new OrganizationSection(new Organization("Software-testing", null,
+                        new Organization.Period(2021, Month.MAY, 2021, Month.JUNE, "Курс \"Тестирование REST API\"", null))));
+        RESUME_2.setSection(SectionType.EDUCATION,
                 new OrganizationSection(
-                        new Organization("JavaRush", "https://javarush.com/",
-                                new Organization.Period(2022, Month.JULY, "Основы языка Java", null))));
+                        new Organization("Beonmax", "https://beonmax.com/",
+                                new Organization.Period(2021, Month.MAY, 2021, Month.JUNE, "Курс \"SQL и PostgreSQL (практический курс)\"", null),
+                                new Organization.Period(2021, Month.MAY, 2021, Month.MAY, "MySQL (базовый курс)", null))));
+        RESUME_2.setSection(SectionType.EDUCATION,
+                new OrganizationSection(
+                        new Organization("Санкт-Петербургский гуманитарный университет профсоюзов, Санкт-Петербург", "https://www.gup.ru/",
+                                new Organization.Period(2006, Month.SEPTEMBER, 2012, Month.JULY, "Реклама, Маркетинговые коммуникации и сопровождение медиа-проектов", null))));
 
-        RESUME_3.setContact(ContactType.EMAIL, "test data");
-        RESUME_3.setContact(ContactType.CELLPHONE, "test data");
         RESUME_3.setSection(SectionType.OBJECTIVE,
                 new TextSection("test data"));
         RESUME_3.setSection(SectionType.PERSONAL,
@@ -200,5 +204,9 @@ public class TestData {
                         new Organization("test data", "test data",
                                 new Organization.Period(2022, Month.JULY, "test data", "test data"),
                                 new Organization.Period(2022, Month.JULY, 2023, Month.APRIL, "test data", null))));
+        RESUME_3.setSection(SectionType.EDUCATION,
+                new OrganizationSection(
+                        new Organization("test data2", "test data2",
+                                new Organization.Period(2021, Month.JULY, 2021, Month.AUGUST, "test data2", "test data2"))));
     }
 }
