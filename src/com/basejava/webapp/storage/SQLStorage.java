@@ -40,15 +40,16 @@ public class SQLStorage implements Storage {
     public void save(Resume resume) {
         LOG.info("Save " + resume);
         sqlHelper.transactionExecute(conn -> {
-            try (PreparedStatement ps = conn.prepareStatement("INSERT INTO resume (uuid, full_name) VALUES (?,?)")) {
-                ps.setString(1, resume.getUuid());
-                ps.setString(2, resume.getFullName());
-                ps.execute();
-            }
-            doInsertContacts(conn, resume);
-            doInsertSections(conn, resume);
-            return null;
-        });
+                    try (PreparedStatement ps = conn.prepareStatement("INSERT INTO resume (uuid, full_name) VALUES (?,?)")) {
+                        ps.setString(1, resume.getUuid());
+                        ps.setString(2, resume.getFullName());
+                        ps.execute();
+                    }
+                    doInsertContacts(conn, resume);
+                    doInsertSections(conn, resume);
+                    return null;
+                }
+        );
     }
 
     @Override
@@ -156,7 +157,7 @@ public class SQLStorage implements Storage {
     }
 
     private void doInsertContacts(Connection conn, Resume resume) throws SQLException {
-        try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES(?,?,?)")) {
+        try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)")) {
             for (Map.Entry<ContactType, String> e : resume.getContacts().entrySet()) {
                 ps.setString(1, resume.getUuid());
                 ps.setString(2, e.getKey().name());
@@ -168,7 +169,7 @@ public class SQLStorage implements Storage {
     }
 
     private void doInsertSections(Connection conn, Resume resume) throws SQLException {
-        try (PreparedStatement ps = conn.prepareStatement("INSERT INTO section (resume_uuid, type, value) VALUES(?,?,?)")) {
+        try (PreparedStatement ps = conn.prepareStatement("INSERT INTO section (resume_uuid, type, value) VALUES (?,?,?)")) {
             for (Map.Entry<SectionType, AbstractSection> e : resume.getSections().entrySet()) {
                 ps.setString(1, resume.getUuid());
                 ps.setString(2, e.getKey().name());

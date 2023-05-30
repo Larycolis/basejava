@@ -190,6 +190,11 @@ public class TestData {
                 new OrganizationSection(
                         new Organization("test data", "test data",
                                 new Organization.Period(2024, Month.DECEMBER, "test data", "test data"))));
+        RESUME_3.setSection(SectionType.EXPERIENCE,
+                new OrganizationSection(
+                        new Organization("test data2", "test data2",
+                                new Organization.Period(2000, Month.JANUARY, 2010, Month.APRIL, "test data2", "test data2"))
+                ));
         RESUME_3.setSection(SectionType.EDUCATION,
                 new OrganizationSection(
                         new Organization("test data", "test data",
