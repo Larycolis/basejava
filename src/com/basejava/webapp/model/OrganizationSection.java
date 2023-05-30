@@ -42,6 +42,6 @@ public class OrganizationSection extends AbstractSection {
 
     @Override
     public String toString() {
-        return organization.toString() + "\n";
+        return organization.toString();
     }
 }

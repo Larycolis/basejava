@@ -183,7 +183,7 @@ public class SQLStorage implements Storage {
     private void doAddContact(Resume resume, ResultSet rs) throws SQLException {
         final String value = rs.getString("value");
         if (value != null) {
-            resume.addContact(ContactType.valueOf(rs.getString("type")), value);
+            resume.setContact(ContactType.valueOf(rs.getString("type")), value);
         }
     }
 
@@ -191,7 +191,7 @@ public class SQLStorage implements Storage {
         String value = rs.getString("value");
         if (value != null) {
             SectionType type = SectionType.valueOf(rs.getString("type"));
-            resume.addSection(type, JsonParser.read(value, AbstractSection.class));
+            resume.setSection(type, JsonParser.read(value, AbstractSection.class));
         }
     }
 

@@ -20,68 +20,80 @@
         <input type="hidden" name="uuid" value="${resume.uuid}">
         <dl>
             <dt>Name:</dt>
-            <dd><input type="text" name="fullName" size=50 value="${resume.fullName}"></dd>
+            <dd><label><input type="text" name="fullName" size=50 value="${resume.fullName}"></label></dd>
         </dl>
         <h3>Contacts:</h3>
         <c:forEach var="type" items="<%=ContactType.values()%>">
             <dl>
                 <dt>${type.type}</dt>
-                <dd><input type="text" name="${type.name()}" size=50 value="${resume.getContact(type)}"></dd>
+                <dd><label><input type="text" name="${type.name()}" size=50 value="${resume.getContact(type)}"></label>
+                </dd>
             </dl>
         </c:forEach>
-        <h3>Sections:</h3>
+        <hr>
         <c:forEach var="type" items="<%=SectionType.values()%>">
             <c:set var="section" value="${resume.getSection(type)}"/>
             <jsp:useBean id="section" type="com.basejava.webapp.model.AbstractSection"/>
             <h3><a>${type.title}</a></h3>
             <c:choose>
-                <c:when test="${type == 'PERSONAL'}">
-                    <input type="text" name="section" size=100 value="<%=section%>">
-                </c:when>
                 <c:when test="${type == 'OBJECTIVE'}">
-                    <input type="text" name="section" size=100 value="<%=section%>">
+                    <label><input type="text" name='${type}' size=100 value="<%=section%>"></label>
+                </c:when>
+                <c:when test="${type == 'PERSONAL'}">
+                    <label><textarea name='${type}' cols=100 rows=5><%=section%></textarea></label>
                 </c:when>
                 <c:when test="${type == 'ACHIEVEMENTS' || type == 'QUALIFICATIONS'}">
-                    <input type="text" name="section" size=100
-                           value="<%=String.join("\n", ((ListSection) section).getList())%>">
+                    <label><textarea name='${type}' cols=100
+                                     rows=5><%=String.join("\n", ((ListSection) section).getList())%></textarea></label>
                 </c:when>
+
                 <c:when test="${type == 'EXPERIENCE' || type == 'EDUCATION'}">
                     <c:forEach var="organization" items="<%=((OrganizationSection) section).getOrganization()%>"
                                varStatus="counter">
                         <dl>
-                            <dt>Company name:</dt>
-                            <dd><input type="text" name="${type}" size=100 value="${organization.homePage.name}"></dd>
+                            <dt>Organization name:</dt>
+                            <dd><label><input type="text" name='${type}' size=100 value="${organization.homePage.name}"></label>
+                            </dd>
                         </dl>
                         <dl>
-                            <dt>Home page:</dt>
-                            <dd><input type="text" name="${type}" size=100 value="${organization.homePage.url}"></dd>
+                            <dt>Organization website:</dt>
+                            <dd><label><input type="text" name='${type}url' size=100
+                                              value="${organization.homePage.url}"></label></dd>
                         </dl>
                         <br>
-                        <c:forEach var="period" items="${organization.period}">
-                            <jsp:useBean id="period" type="com.basejava.webapp.model.Organization.Period"/>
-                            <dl>
-                                <dt>Start date:</dt>
-                                <dd><input type="text" name="${type}${counter.index}" size=20
-                                           value="<%=DateUtil.format(period.getStartDate())%>"
-                                           placeholder="MM/yyyy"></dd>
-                            </dl>
-                            <dl>
-                                <dt>End date:</dt>
-                                <dd><input type="text" name="${type}${counter.index}" size=20
-                                           value="<%=DateUtil.format(period.getEndDate())%>" placeholder="MM/yyyy">
-                                </dd>
-                            </dl>
-                            <dl>
-                                <dt>Title:</dt>
-                                <dd><input type="text" name="${type}${counter.index}" size=100
-                                           value="<%=period.getTitle()%>"></dd>
-                            </dl>
-                            <dl>
-                                <dt>Description:</dt>
-                                <dd><input type="text" name="${type}${counter.index}" size=100
-                                           value="<%=period.getDescription()%>"></dd>
-                            </dl>
-                        </c:forEach>
+
+                        <div style="margin-left: 30px">
+                            <c:forEach var="period" items="${organization.period}">
+                                <jsp:useBean id="period" type="com.basejava.webapp.model.Organization.Period"/>
+                                <dl>
+                                    <dt>Start date:</dt>
+                                    <dd>
+                                        <label><input type="text" name="${type}${counter.index}startDate" size=10
+                                                      value="<%=DateUtil.format(period.getStartDate())%>"
+                                                      placeholder="MM/yyyy"></label></dd>
+                                </dl>
+                                <dl>
+                                    <dt>End date:</dt>
+                                    <dd>
+                                        <label><input type="text" name="${type}${counter.index}endDate" size=10
+                                                      value="<%=DateUtil.format(period.getEndDate())%>"
+                                                      placeholder="MM/yyyy"></label></dd>
+                                </dl>
+                                <dl>
+                                    <dt>Position:</dt>
+                                    <dd>
+                                        <label><input type="text" name="${type}${counter.index}title" size=100
+                                                      value="${period.title}"></label></dd>
+                                </dl>
+                                <dl>
+                                    <dt>Description:</dt>
+                                    <dd>
+                                        <label><textarea name="${type}${counter.index}description" rows=2
+                                                         cols=100>${period.description}</textarea></label>
+                                    </dd>
+                                </dl>
+                            </c:forEach>
+                        </div>
                     </c:forEach>
                 </c:when>
             </c:choose>

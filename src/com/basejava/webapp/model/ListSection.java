@@ -42,6 +42,6 @@ public class ListSection extends AbstractSection {
 
     @Override
     public String toString() {
-        return list.toString() + "\n";
+        return list.toString();
     }
 }

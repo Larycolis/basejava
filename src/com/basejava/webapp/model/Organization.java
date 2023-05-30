@@ -63,7 +63,7 @@ public class Organization implements Serializable {
 
     @Override
     public String toString() {
-        return "\n" + homePage + "\n" + period;
+        return "Organization(" + homePage + "," + period + ')';
     }
 
     @XmlAccessorType(XmlAccessType.FIELD)
@@ -135,16 +135,7 @@ public class Organization implements Serializable {
 
         @Override
         public String toString() {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yyyy");
-            String startDateDisplayFormat = startDate.format(formatter);
-            String endDateDisplayFormat;
-            if (endDate.isEqual(NOW)) {
-                endDateDisplayFormat = "Сейчас";
-            } else {
-                endDateDisplayFormat = endDate.format(formatter);
-            }
-
-            return startDateDisplayFormat + " - " + endDateDisplayFormat + "\n" + title + "\n" + description;
+            return "Period(" + startDate + ',' + endDate + ',' + title + ',' + description + ')';
         }
     }
 }
