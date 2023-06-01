@@ -25,78 +25,20 @@ public class ResumeServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String uuid = request.getParameter("uuid");
-        String action = request.getParameter("action");
-        if (action == null) {
-            request.setAttribute("resumes", storage.getAllSorted());
-            request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
-            return;
-        }
-        Resume resume = null;
-        switch (action) {
-            case "add":
-                resume = Resume.EMPTY;
-                break;
-            case "delete":
-                storage.delete(uuid);
-                response.sendRedirect("resume");
-                return;
-            case "view":
-                resume = storage.get(uuid);
-                break;
-            case "edit":
-                resume = storage.get(uuid);
-                for (SectionType type : SectionType.values()) {
-                    AbstractSection section = resume.getSection(type);
-                    switch (type) {
-                        case OBJECTIVE:
-                        case PERSONAL:
-                            if (section == null) {
-                                section = TextSection.EMPTY;
-                            }
-                            break;
-                        case ACHIEVEMENTS:
-                        case QUALIFICATIONS:
-                            if (section == null) {
-                                section = ListSection.EMPTY;
-                            }
-                            break;
-                        case EXPERIENCE:
-                        case EDUCATION:
-                            OrganizationSection orgSection = (OrganizationSection) section;
-                            List<Organization> emptyFirstOrganizations = new ArrayList<>();
-                            emptyFirstOrganizations.add(Organization.EMPTY);
-                            if (orgSection != null) {
-                                for (Organization organization : orgSection.getOrganization()) {
-                                    List<Organization.Period> emptyFirstPeriod = new ArrayList<>();
-                                    emptyFirstPeriod.add(Organization.Period.EMPTY);
-                                    emptyFirstPeriod.addAll(organization.getPeriod());
-                                    emptyFirstOrganizations.add(new Organization(organization.getHomePage(), emptyFirstPeriod));
-                                }
-                            }
-                            section = new OrganizationSection(emptyFirstOrganizations);
-                            break;
-                    }
-                    resume.setSection(type, section);
-                }
-                break;
-            default:
-                throw new IllegalArgumentException("Action " + action + " is illegal");
-        }
-        request.setAttribute("resume", resume);
-        request.getRequestDispatcher(
-                ("view".equals(action) ? "WEB-INF/jsp/view.jsp" : "WEB-INF/jsp/edit.jsp")
-        ).forward(request, response);
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
-        Resume resume = storage.get(uuid);
-        resume.setFullName(fullName);
+        final boolean isCreate = (uuid == null || uuid.length() == 0);
+        Resume resume;
+        if (isCreate) {
+            resume = new Resume(fullName);
+        } else {
+            Config.getConfig().checkImmutable(uuid);
+            resume = storage.get(uuid);
+            resume.setFullName(fullName);
+        }
+
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
             if (HtmlUtil.isEmpty(value)) {
@@ -146,7 +88,78 @@ public class ResumeServlet extends HttpServlet {
                 }
             }
         }
-        storage.update(resume);
+        if (isCreate) {
+            storage.save(resume);
+        } else {
+            storage.update(resume);
+        }
         response.sendRedirect("resume");
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String uuid = request.getParameter("uuid");
+        String action = request.getParameter("action");
+        if (action == null) {
+            request.setAttribute("resumes", storage.getAllSorted());
+            request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
+            return;
+        }
+        Resume resume = null;
+        switch (action) {
+            case "add":
+                resume = Resume.EMPTY;
+                break;
+            case "delete":
+                Config.getConfig().checkImmutable(uuid);
+                storage.delete(uuid);
+                response.sendRedirect("resume");
+                return;
+            case "view":
+                resume = storage.get(uuid);
+                break;
+            case "edit":
+                resume = storage.get(uuid);
+                for (SectionType type : SectionType.values()) {
+                    AbstractSection section = resume.getSection(type);
+                    switch (type) {
+                        case OBJECTIVE:
+                        case PERSONAL:
+                            if (section == null) {
+                                section = TextSection.EMPTY;
+                            }
+                            break;
+                        case ACHIEVEMENTS:
+                        case QUALIFICATIONS:
+                            if (section == null) {
+                                section = ListSection.EMPTY;
+                            }
+                            break;
+                        case EXPERIENCE:
+                        case EDUCATION:
+                            OrganizationSection orgSection = (OrganizationSection) section;
+                            List<Organization> emptyFirstOrganizations = new ArrayList<>();
+                            emptyFirstOrganizations.add(Organization.EMPTY);
+                            if (orgSection != null) {
+                                for (Organization organization : orgSection.getOrganization()) {
+                                    List<Organization.Period> emptyFirstPeriod = new ArrayList<>();
+                                    emptyFirstPeriod.add(Organization.Period.EMPTY);
+                                    emptyFirstPeriod.addAll(organization.getPeriod());
+                                    emptyFirstOrganizations.add(new Organization(organization.getHomePage(), emptyFirstPeriod));
+                                }
+                            }
+                            section = new OrganizationSection(emptyFirstOrganizations);
+                            break;
+                    }
+                    resume.setSection(type, section);
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Action " + action + " is illegal");
+        }
+        request.setAttribute("resume", resume);
+        request.getRequestDispatcher(
+                ("view".equals(action) ? "WEB-INF/jsp/view.jsp" : "WEB-INF/jsp/edit.jsp")
+        ).forward(request, response);
     }
 }

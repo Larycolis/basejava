@@ -17,11 +17,6 @@ import java.util.UUID;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Comparable<Resume>, Serializable {
     private static final long serialVersionUUID = 1L;
-    private String uuid; // Unique identifier
-    private String fullName;
-    private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
-    private final Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
-
     public static final Resume EMPTY = new Resume();
 
     static {
@@ -32,6 +27,11 @@ public class Resume implements Comparable<Resume>, Serializable {
         EMPTY.setSection(SectionType.EXPERIENCE, new OrganizationSection(Organization.EMPTY));
         EMPTY.setSection(SectionType.EDUCATION, new OrganizationSection(Organization.EMPTY));
     }
+
+    private String uuid; // Unique identifier
+    private String fullName;
+    private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+    private final Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
 
     public Resume() {
     }

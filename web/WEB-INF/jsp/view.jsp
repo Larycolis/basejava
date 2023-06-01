@@ -80,7 +80,7 @@
                             <tr>
                                 <td><%=HtmlUtil.formatDates(period)%>
                                 </td>
-                                <td><b>${period.title}</b><br>${period.description}</td>
+                                <td><b>${period.title}</b><br>${period.description}</td><br>
                             </tr>
                         </c:forEach>
                     </c:forEach>
@@ -89,7 +89,8 @@
         </c:if>
     </table>
     </c:forEach>
-    <button onclick="window.history.back()">Ok</button>
+    <br>
+    <button onclick="window.history.back()">Back to list</button>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
