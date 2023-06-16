@@ -3,19 +3,14 @@ package com.basejava.webapp;
 import com.basejava.webapp.storage.SQLStorage;
 import com.basejava.webapp.storage.Storage;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
 public class Config {
-    // private static final File PROPS = new File("config\\resumes.properties");
-    private static final File PROPS = new File(getHomeDir(), "\\config\\resumes.properties");
+    private static final String PROPS = "/resumes.properties";
     private static final Config INSTANCE = new Config();
-
     private final File storageDir;
     private final Storage storage;
 
@@ -28,32 +23,27 @@ public class Config {
         return INSTANCE;
     }
 
+    private Config() {
+        try(InputStream is = Config.class.getResourceAsStream(PROPS)) {
+            Properties props = new Properties();
+            props.load(is);
+            storageDir = new File(props.getProperty("storage.dir"));
+            storage = new SQLStorage(
+                    props.getProperty("db.url"),
+                    props.getProperty("db.user"),
+                    props.getProperty("db.password")
+            );
+        } catch (IOException e) {
+            throw new IllegalStateException("Invalid config file " + PROPS);
+        }
+    }
+
     public File getStorageDir() {
         return storageDir;
     }
 
     public Storage getStorage() {
         return storage;
-    }
-
-    private Config() {
-        try (InputStream is = new FileInputStream(PROPS)) {
-            Properties props = new Properties();
-            props.load(is);
-            storageDir = new File(props.getProperty("storage.dir"));
-            storage = new SQLStorage(props.getProperty("db.url"), props.getProperty("db.user"), props.getProperty("db.password"));
-        } catch (IOException e) {
-            throw new IllegalStateException("Invalid config file " + PROPS.getAbsolutePath());
-        }
-    }
-
-    private static File getHomeDir() {
-        String root = System.getProperty("homeDir");
-        File homeDir = new File(root == null ? "." : root);
-        if (!homeDir.isDirectory()) {
-            throw new IllegalStateException(homeDir + " is not directory");
-        }
-        return homeDir;
     }
 
     public boolean isImmutable(String uuids) {
@@ -64,4 +54,13 @@ public class Config {
         if (immutableUuids.contains(uuids))
             throw new RuntimeException("Зарезервированные резюме нельзя менять");
     }
+
+//        private static File getHomeDir() {
+//        String root = System.getProperty("homeDir");
+//        File homeDir = new File(root == null ? "." : root);
+//        if (!homeDir.isDirectory()) {
+//            throw new IllegalStateException(homeDir + " is not directory");
+//        }
+//        return homeDir;
+//    }
 }
