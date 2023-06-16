@@ -1,3 +1,6 @@
+## Реализованный проект
+http://larycolis.fvds.ru/resumes/resume
+
 ## Рекомендуемые книги
 - [Яков Файн, "Программирование на Java для начинающих"](http://myflex.org/books/java4kids/java4kids.htm)
 - [Книги по Java: от новичка до профессионала](https://proglib.io/p/java-books-2019/)
